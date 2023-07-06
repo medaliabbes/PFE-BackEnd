@@ -1,17 +1,30 @@
 
-require('dotenv').config()
 
-const mongoose = require('mongoose') ;
-const express = require('express')   ;
-const app     = express() ;
+require('dotenv').config()
+const mongoose      = require('mongoose')  ;
+const cors          = require('cors') ;
+const express       = require('express')   ;
+const app           = express() ;
+const UserRouter    = require('./routers/user.router') ;
 
 //configure mongoose
-/*mongoose.connect(
-    process.env.MONGODB_URI || "mongodb://localhost/CRUD",
+mongoose.connect(
+    process.env.MONGODB_URI ,
     {
       useNewUrlParser    : true     ,
       useUnifiedTopology : true     ,
     }
   );
-*/
-  console.log(process.env.API_KEY) // remove this a
+
+
+app.use(cors({
+  origin: 'http://localhost:4200'
+}));
+
+app.use(express.json());
+
+app.use('/api/v1/users' , UserRouter) ;
+
+app.listen(process.env.APP_PORT , ()=>{
+    console.log("Server Running on port :" , process.env.APP_PORT) ;
+})

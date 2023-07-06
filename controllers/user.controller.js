@@ -5,21 +5,26 @@
  * 
  */
 
-const Create = (req , res) => {
+const Create = async (req , res) => {
+    console.log("Create Controller");
+    res.status(201).json({ message : 'user Created'}) ;
+}
+
+const Update = async (req , res) => {
     
 }
 
-const Update = (req , res) => {
+const Delete = async (req , res) => {
     
 }
 
-const Delete = (req , res) => {
+const Read   = async (req , res) => {
     
 }
 
-const Read = (req , res) => {
-    
+const ReadAll = async (req , res) =>{
+    console.log("ReadAll Controller");
+    res.status(201).json({ message : 'users'}) ;
 }
 
-
-module.exports = { Create , Update , Delete , Read } ;
+module.exports = { Create , Update , Delete , Read , ReadAll} ;

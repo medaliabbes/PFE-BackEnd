@@ -11,15 +11,15 @@ const UserController       = require('./../controllers/user.controller');
  * router.method('/path' , middleware ,controller) ; 
  */
 
-router.post('/' , ) ;
+router.post('/' , UserController.Create ) ;
 
-router.get('/'  , ) ;
+router.get('/'  , UserController.ReadAll) ;
 
-router.get('/:id' ,) ;
+//router.get('/:id' ,) ;
 
-router.put('/:id' , ) ;
+//router.put('/:id' , ) ;
 
-router.delete('/:id' , ) ;
+//router.delete('/:id' , ) ;
 
 
 module.exports = router ;
