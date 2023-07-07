@@ -9,7 +9,8 @@ const Zone = mongoose.Schema({
                },
     userid   : {   //the id of the owner
                     type : mongoose.Schema.Types.ObjectId  ,
-                    ref  : 'user' ,
+                    ref  : 'user'   ,
+                    required : true ,
                 },
     name     : String ,
     location : String ,
@@ -17,3 +18,5 @@ const Zone = mongoose.Schema({
 
 
 module.exports = mongoose.model('zone' , Zone) ;
+
+

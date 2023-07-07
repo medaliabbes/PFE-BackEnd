@@ -33,10 +33,10 @@ async function GetZonesByUserId(userID)
  * Get all devices of a particular zone 
  * @param {*} zoneID 
  */
-async function GetZoneDevices(zoneID)
+async function GetListOfDevices(zoneID)
 {
     return await DeviceModel.find({zoneid : zoneID}) ;
 }
 
-module.exports = { Create , Update , Delete , Read ,GetZonesByUserId , GetZoneDevices} ;
+module.exports = { Create , Update , Delete , Read ,GetZonesByUserId , GetListOfDevices} ;
 
