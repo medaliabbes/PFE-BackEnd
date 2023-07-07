@@ -36,6 +36,11 @@ async function Read(id)
     return await UserModel.findById(id) ;
 }
 
+async function ReadAll() 
+{
+    return await UserModel.find() ;
+}
+
 async function GetAddById(id)
 {
     return await UserModel.find({addby : id}) ;
@@ -43,9 +48,9 @@ async function GetAddById(id)
 
 async function GetUserByEmail(email)
 {
-    return await UserModel.find({email : email}) ;
+    return await UserModel.findOne({email : email}) ;
 }
 
 
-module.exports = { Create , Update , Delete , Read , GetAddById , GetUserByEmail } ;
+module.exports = { Create , Update , Delete , Read , ReadAll , GetAddById , GetUserByEmail } ;
 

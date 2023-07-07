@@ -2,7 +2,9 @@
 const mongoose = require('mongoose') ;
 
 const Device = mongoose.Schema({
+
     _id  :  mongoose.Schema.Types.ObjectId,
+
     mode :  { 
               type : Number ,
               default : 0 
@@ -15,7 +17,12 @@ const Device = mongoose.Schema({
         minlength : 10 */
     } , 
     
-    join_eui : String ,
+    join_eui : {
+        type : String ,
+        required : true 
+    } ,
+
+    dev_address : String ,
     
     zoneid   :{
         type :  mongoose.Schema.Types.ObjectId,

@@ -2,12 +2,14 @@
 const mongoose = require('mongoose') ;
 
 const User = mongoose.Schema({
-    _id       : mongoose.Schema.Types.ObjectId ,
+    _id       : {
+        type :mongoose.Schema.Types.ObjectId ,
+        default : new mongoose.Types.ObjectId() ,
+    } ,
     //a user can add another user by, and auth0 will do the rest
     addby : { 
         type : mongoose.Schema.Types.ObjectId ,
         ref : 'user' ,
-        default : 'null'
             },
     email : {
         type : String ,
@@ -15,7 +17,7 @@ const User = mongoose.Schema({
             } ,
     name       : String ,
     profilePic : String ,
-    passWord   : String ,
+    password   : String ,
     permissionLevel : Number , //farmer , worker 
 });
 

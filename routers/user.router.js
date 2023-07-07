@@ -15,11 +15,11 @@ router.post('/' , UserController.Create ) ;
 
 router.get('/'  , UserController.ReadAll) ;
 
-//router.get('/:id' ,) ;
+router.get('/:id' , UserController.Read) ;
 
-//router.put('/:id' , ) ;
+router.put('/:id' , UserController.Update) ;
 
-//router.delete('/:id' , ) ;
+router.delete('/:id' , UserController.Delete) ;
 
 
 module.exports = router ;
