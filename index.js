@@ -31,14 +31,12 @@ app.use('/api/v1/users'     , UserRouter) ;
 app.use('/api/v1/zones'     , ZoneRouter) ;
 
 app.use('/api/v1/scheduler' , SchedulerRouter) ;
+
+
 /*
 app.use('/api/v1/devices'   , DeviceRouter) ;
-
-
-
-
 */
 
 app.listen(process.env.APP_PORT , ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;
-})
+}) ;

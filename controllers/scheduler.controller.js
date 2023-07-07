@@ -2,6 +2,9 @@
 const SchedulerService    = require('./../services/scheduler.service') ;
 
 
+/**
+ * All controller should be protected againest unothorized use 
+ */
 const Create = async (req , res) => {
 
     try {
