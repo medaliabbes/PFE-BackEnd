@@ -27,10 +27,12 @@ app.use(cors({
 app.use(express.json());
 
 app.use('/api/v1/users'     , UserRouter) ;
+
+app.use('/api/v1/zones'     , ZoneRouter) ;
 /*
 app.use('/api/v1/devices'   , DeviceRouter) ;
 
-app.use('/api/v1/zones'     , ZoneRouter) ;
+
 
 app.use('/api/v1/scheduler' , SchedulerRouter) ;
 */

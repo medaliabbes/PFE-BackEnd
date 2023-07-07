@@ -16,7 +16,7 @@ const User = mongoose.Schema({
         required : true ,
             } ,
     name       : String ,
-    profilePic : String ,
+    profilepic : String ,
     password   : String ,
     permissionLevel : Number , //farmer , worker 
 });
