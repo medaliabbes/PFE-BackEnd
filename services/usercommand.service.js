@@ -28,11 +28,21 @@ async function findUserCommand(userId)
     return await userCommandModel.find({userid : userId}) ;
 }
 
+/**
+ * 
+ * @param {*} zoneId 
+ * @returns commands executed on a particular zone
+ */
 async function findZoneCommand(zoneId)
 {
     return await userCommandModel.find({zoneid : zoneId}) ;
 }
 
+/**
+ * 
+ * @param {*} deviceId 
+ * @returns executed on particular device
+ */
 async function findDeviceCommand(deviceId)
 {
     return await userCommandModel.find({deviceid : deviceId}) ;
