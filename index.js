@@ -1,14 +1,15 @@
 
 
 require('dotenv').config()
-const mongoose        = require('mongoose')  ;
-const cors            = require('cors') ;
-const express         = require('express')   ;
-const app             = express() ;
-const UserRouter      = require('./routers/user.router') ;
-const DeviceRouter    = require('./routers/device.router') ;
-const SchedulerRouter = require('./routers/scheduler.router') ;
-const ZoneRouter      = require('./routers/zone.router') ;
+const mongoose          = require('mongoose')  ;
+const cors              = require('cors') ;
+const express           = require('express')   ;
+const app               = express() ;
+const UserRouter        = require('./routers/user.router') ;
+const DeviceRouter      = require('./routers/device.router') ;
+const SchedulerRouter   = require('./routers/scheduler.router') ;
+const ZoneRouter        = require('./routers/zone.router') ;
+const UserCommandRouter = require('./routers/usercommand.router') ;
 
 //configure mongoose
 mongoose.connect(
@@ -31,8 +32,8 @@ app.use('/api/v1/users'     , UserRouter) ;
 app.use('/api/v1/zones'     , ZoneRouter) ;
 
 app.use('/api/v1/scheduler' , SchedulerRouter) ;
-
-
+ 
+app.use('/api/v1/usercommand' , UserCommandRouter);
 /*
 app.use('/api/v1/devices'   , DeviceRouter) ;
 */
