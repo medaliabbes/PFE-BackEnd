@@ -10,7 +10,7 @@ const DeviceRouter      = require('./routers/device.router') ;
 const SchedulerRouter   = require('./routers/scheduler.router') ;
 const ZoneRouter        = require('./routers/zone.router') ;
 const UserCommandRouter = require('./routers/usercommand.router') ;
-
+const DeviceRouter      = require('./routers/device.router') ;
 //configure mongoose
 mongoose.connect(
     process.env.MONGODB_URI ,
@@ -34,6 +34,9 @@ app.use('/api/v1/zones'     , ZoneRouter) ;
 app.use('/api/v1/scheduler' , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
+
+app.use('/api/v1/device'      , DeviceRouter) ;
+
 /*
 app.use('/api/v1/devices'   , DeviceRouter) ;
 */
