@@ -1,7 +1,9 @@
 
 
-const ZoneModel = require('./../models/zone.model') ;
+const ZoneModel   = require('./../models/zone.model') ;
 const DeviceModel = require('./../models/device.model') ;
+const AlertModel  = require('./../models/alert.model') ;
+const SchedulerModel = require('./../models/scheduler.model');
 
 async function Create(zone){
     return await ZoneModel.create(zone) ;
@@ -21,15 +23,6 @@ async function Read(id){
 }
 
 /**
- * Get all the zones of a particular user 
- * @param {*} userID 
- */
-async function GetZonesByUserId(userID)
-{
-    return await ZoneModel.find({userid :userID}) ;
-}
-
-/**
  * Get all devices of a particular zone 
  * @param {*} zoneID 
  */
@@ -38,5 +31,16 @@ async function GetListOfDevices(zoneID)
     return await DeviceModel.find({zoneid : zoneID}) ;
 }
 
-module.exports = { Create , Update , Delete , Read ,GetZonesByUserId , GetListOfDevices} ;
+/**
+ * 
+ * @param {*} zoneid 
+ * @returns list of scheduler of a particular zone 
+ */
+async function GetListOfScheduler(zoneid)
+{
+    return await SchedulerModel.find({zone : zoneid}) ;
+}
+
+module.exports = { Create , Update , Delete , Read ,
+                   GetListOfDevices , GetListOfScheduler } ;
 

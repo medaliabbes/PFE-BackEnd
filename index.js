@@ -11,6 +11,8 @@ const SchedulerRouter   = require('./routers/scheduler.router') ;
 const ZoneRouter        = require('./routers/zone.router') ;
 const UserCommandRouter = require('./routers/usercommand.router') ;
 const DeviceRouter      = require('./routers/device.router') ;
+
+
 //configure mongoose
 mongoose.connect(
     process.env.MONGODB_URI ,
@@ -27,19 +29,16 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use('/api/v1/users'     , UserRouter) ;
+app.use('/api/v1/users'       , UserRouter) ;
 
-app.use('/api/v1/zones'     , ZoneRouter) ;
+app.use('/api/v1/zones'       , ZoneRouter) ;
 
-app.use('/api/v1/scheduler' , SchedulerRouter) ;
+app.use('/api/v1/scheduler'   , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
 
 app.use('/api/v1/device'      , DeviceRouter) ;
 
-/*
-app.use('/api/v1/devices'   , DeviceRouter) ;
-*/
 
 app.listen(process.env.APP_PORT , ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;

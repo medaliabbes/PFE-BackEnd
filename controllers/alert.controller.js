@@ -74,4 +74,4 @@ const GetDeviceAlert = async (req,res) =>{
     }
 }
 
-module.exports = { Create , Update , Delete , Read , GetDeviceAlert} ;
+module.exports = { Create , Update , Delete , Read , GetDeviceAlert } ;

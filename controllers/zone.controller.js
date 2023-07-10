@@ -78,10 +78,11 @@ const Read = async (req , res) => {
  * @param {*} req 
  * @param {*} res 
  */
-const GetZoneDevices =  async(req , res) =>{
+const GetListOfDevices =  async(req , res) =>{
     try{
         const zoneid = req.params.id ;
         const ret = await ZoneService.GetListOfDevices(zoneid) ;
+        res.status(200).json(ret) ;
     }catch(error)
     {
         console.log(error)
@@ -89,4 +90,20 @@ const GetZoneDevices =  async(req , res) =>{
     }
 }
 
-module.exports = { Create , Update , Delete , Read , GetZoneDevices} ;
+const GetListOfScheduler = async(req , res) =>{
+    try{
+        
+        const zoneId  =  req.params.id ; 
+        const ret = await ZoneService.GetListOfScheduler(zoneId) ;
+        res.status(200).json(ret) ;
+
+    }catch(error)
+    {
+        console.log(error) ;
+        res.status(500).json({message : error}) ;
+    }
+}
+
+
+module.exports = { Create , Update , Delete , Read ,
+                   GetListOfDevices , GetListOfScheduler} ;

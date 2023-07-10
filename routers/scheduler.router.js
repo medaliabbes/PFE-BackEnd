@@ -19,8 +19,10 @@ router.delete('/:id' , SchedulerController.Delete) ;
 
 router.get('/:id' , SchedulerController.Read) ;
 
+/*
 router.get('/:id/devices' , SchedulerController.GetDeviceSheduler) ;
 
 router.get('/:id/zones' , SchedulerController.GetZoneSheduler) ;
+*/
 
 module.exports = router ;
