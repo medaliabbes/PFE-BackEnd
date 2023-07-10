@@ -10,7 +10,7 @@ const DeviceRouter      = require('./routers/device.router') ;
 const SchedulerRouter   = require('./routers/scheduler.router') ;
 const ZoneRouter        = require('./routers/zone.router') ;
 const UserCommandRouter = require('./routers/usercommand.router') ;
-const DeviceRouter      = require('./routers/device.router') ;
+
 
 
 //configure mongoose

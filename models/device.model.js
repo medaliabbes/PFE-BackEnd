@@ -3,7 +3,7 @@ const mongoose = require('mongoose') ;
 
 const Device = mongoose.Schema({
 
-    _id  :  mongoose.Schema.Types.ObjectId,
+    //_id  :  mongoose.Schema.Types.ObjectId,
 
     mode :  { 
               type : Number ,
@@ -32,7 +32,11 @@ const Device = mongoose.Schema({
     ownerid   : {
         type : mongoose.Schema.Types.ObjectId,
         ref  : 'user' , 
-    }
+    } ,
+    state : {
+        type : String ,
+        default : "disconnected"
+    }    
 }) ;
 
 

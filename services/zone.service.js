@@ -41,6 +41,11 @@ async function GetListOfScheduler(zoneid)
     return await SchedulerModel.find({zone : zoneid}) ;
 }
 
+async function ReadAll()
+{
+    return await ZoneModel.find() ;
+}
+
 module.exports = { Create , Update , Delete , Read ,
-                   GetListOfDevices , GetListOfScheduler } ;
+                   GetListOfDevices , GetListOfScheduler , ReadAll } ;
 

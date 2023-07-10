@@ -105,5 +105,16 @@ const GetListOfScheduler = async(req , res) =>{
 }
 
 
+const GetAll = async (req , res) => {
+    try{
+        const ret  =  await ZoneService.ReadAll() ;
+        res.status(200).json(ret) ;
+    }catch(error)
+    {
+        console.log(error) ;
+        res.status(500).json( {message : error}) ;
+    }
+}
+
 module.exports = { Create , Update , Delete , Read ,
-                   GetListOfDevices , GetListOfScheduler} ;
+                   GetListOfDevices , GetListOfScheduler , GetAll} ;

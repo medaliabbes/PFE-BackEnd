@@ -3,10 +3,10 @@ const mongoose = require('mongoose') ;
 
 
 const UserCommand = new  mongoose.Schema({
-    _id : {
+    /*_id : {
         type : mongoose.Schema.Types.ObjectId ,
         default : new mongoose.Types.ObjectId() ,
-    } ,
+    } ,*/
     userid   : {   //the id of the owner
         type : mongoose.Schema.Types.ObjectId  ,
         ref  : 'user'   ,

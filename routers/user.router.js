@@ -2,6 +2,7 @@
 
 const router               = require('express').Router() ;
 const UserController       = require('./../controllers/user.controller');
+
 /**
  * Example on how this should work :
  * the request will reashes the router where it will passed to the middleware to check 
@@ -19,7 +20,8 @@ router.get('/:id' , UserController.Read) ;
 
 router.put('/:id' , UserController.Update) ;
 
-router.delete('/:id' , UserController.Delete) ;
+router.delete('/:id'    , UserController.Delete) ;
 
+router.get('/:id/zones' , UserController.GetListZone) ;
 
 module.exports = router ;

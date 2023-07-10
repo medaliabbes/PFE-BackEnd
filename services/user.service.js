@@ -1,6 +1,7 @@
 
-const mongoose = require('mongoose') ;
+const mongoose  = require('mongoose') ;
 const UserModel = require('./../models/user.model') ;
+const ZoneModel = require('./../models/zone.model');
 
 /**
  * All access to the database should be from service layer 
@@ -51,6 +52,11 @@ async function GetUserByEmail(email)
     return await UserModel.findOne({email : email}) ;
 }
 
+async function GetListOfZones(userid)
+{
+    return await ZoneModel.find({ userid: userid}) ;
+}
 
-module.exports = { Create , Update , Delete , Read , ReadAll , GetAddById , GetUserByEmail } ;
+module.exports = { Create , Update , Delete , Read , ReadAll ,
+                   GetAddById , GetUserByEmail , GetListOfZones } ;
 

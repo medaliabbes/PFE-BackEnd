@@ -4,10 +4,10 @@ const mongoose = require('mongoose') ;
 
 const Alert = mongoose.Schema({
     
-    _id : {
+    /*_id : {
         type : mongoose.Schema.Types.ObjectId ,
         default : new mongoose.Types.ObjectId() ,
-    },
+    },*/
     deviceid : {
         type : mongoose.Schema.Types.ObjectId ,
         ref : 'device',
@@ -16,5 +16,5 @@ const Alert = mongoose.Schema({
 });
 
 
-module.exports =  mongoose.model('alert' , alert) ;
+module.exports =  mongoose.model('alert' , Alert) ;
 

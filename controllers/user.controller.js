@@ -6,7 +6,6 @@ const UserService = require('./../services/user.service') ;
  * Controller should parse the request data and pass objects to the service
  * 
  */
-
 const Create = async (req , res) => {
     try
     {
@@ -90,4 +89,17 @@ const ReadAll = async (req , res) =>{
     }
 }
 
-module.exports = { Create , Update , Delete , Read , ReadAll} ;
+const GetListZone = async(req , res) =>{
+    try{
+        const id = req.params.id ;
+        const ret = await UserService.GetListOfZones(id); 
+        res.status(200).json(ret) ;
+    }catch(error)
+    {
+        console.log(error) ;
+        res.status(500).json({message : error}) ;
+    }
+}
+
+
+module.exports = { Create , Update , Delete , Read , ReadAll , GetListZone } ;
