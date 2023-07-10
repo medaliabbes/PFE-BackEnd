@@ -10,11 +10,11 @@ router.put('/:id'    , userCommandController.Update) ;
 
 router.delete('/:id' , userCommandController.Delete) ;
 
-router.get('/device/:id' , userCommandController.GetDeviceCommand) ;
+router.get('/:id/device' , userCommandController.GetDeviceCommand) ;
 
-router.get('/zone/:id'   , userCommandController.GetZoneCommands) ;
+router.get('/:id/zone'   , userCommandController.GetZoneCommands) ;
 
-router.get('/user/:id'   , userCommandController.GetUserCommand) ;
+router.get('/:id/user'   , userCommandController.GetUserCommand) ;
 
 module.exports = router ;
 

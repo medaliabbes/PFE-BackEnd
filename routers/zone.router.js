@@ -14,6 +14,7 @@ router.put('/:id'    , ZoneController.Update) ;
 
 router.delete('/:id' , ZoneController.Delete) ;
 
+router.get('/:id/devices' , ZoneController.GetZoneDevices) ;
 
 module.exports = router ;
 
