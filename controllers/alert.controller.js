@@ -11,7 +11,7 @@ const Create = async(req , res) => {
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json( {message : error}) ;
+        res.status(500).json( {error : error}) ;
     }
 }
 
@@ -25,7 +25,7 @@ const Update = async(req , res) => {
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json( {message : error}) ;
+        res.status(500).json( {error : error}) ;
     }
 }
 
@@ -39,7 +39,7 @@ const Delete = async(req , res )=>{
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json( {message : error}) ;
+        res.status(500).json( {error : error}) ;
     }
 }
 
@@ -53,7 +53,7 @@ const Read = async(res, res) =>{
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json( {message : error}) ;
+        res.status(500).json( {error : error}) ;
     }
 }
 
@@ -70,7 +70,7 @@ const GetDeviceAlert = async (req,res) =>{
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json( {message : error}) ;
+        res.status(500).json( {error : error}) ;
     }
 }
 

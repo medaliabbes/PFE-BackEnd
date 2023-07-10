@@ -9,7 +9,7 @@ const Create = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -22,7 +22,7 @@ const Update = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -34,7 +34,7 @@ const Delete = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -46,7 +46,7 @@ const Read = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -58,7 +58,7 @@ const GetUserCommand  = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -70,7 +70,7 @@ const GetZoneCommands = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -82,7 +82,7 @@ const GetDeviceCommand = async(req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 

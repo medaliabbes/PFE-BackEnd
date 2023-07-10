@@ -13,7 +13,7 @@ const Create = async (req , res) => {
         res.status(201).json(ret) ;
     } catch (error) {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -26,7 +26,7 @@ const Update = async (req , res) => {
         res.status(200).json(ret) ;
     } catch (error) {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -38,7 +38,7 @@ const Delete = async (req , res) => {
         res.status(200).json(ret) ;
     } catch (error) {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -50,7 +50,7 @@ const Read = async (req , res) => {
         res.status(200).json(ret) ;
     } catch (error) {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -61,7 +61,7 @@ const GetDeviceSheduler = async (req , res ) =>{
         const ret      =  await SchedulerService.FindDeviceScheduler(deviceid) ;
         res.status(200).json(ret) ;
     } catch (error) {
-        console.error({message : error}) ;
+        console.error({error : error}) ;
         res.status(500).json(error) ;
     }
 }
@@ -73,7 +73,7 @@ const GetZoneSheduler = async(req , res) => {
         const ret      =  await SchedulerService.FindZoneScheduler(zoneid) ;
         res.status(200).json(ret) ;
     } catch (error) {
-        console.error({message : error}) ;
+        console.error({error : error}) ;
         res.status(500).json(error) ;
     }
 }

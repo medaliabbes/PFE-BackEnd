@@ -24,7 +24,7 @@ const Create = async (req , res) => {
     }catch(e)
     {
         console.error(e);
-        res.status(500).json({message : e}) ;
+        res.status(500).json({error : e}) ;
     }
 
 }
@@ -50,7 +50,7 @@ const Update = async (req , res) => {
     }catch(e)
     {
         console.error(e) ;
-        res.status(500).json({message : e}) ;
+        res.status(500).json({error : e}) ;
     }
 
 }
@@ -64,7 +64,7 @@ const Delete = async (req , res) => {
 
     }catch(e)
     {
-        res.status(500).json({message : e}) ;
+        res.status(500).json({error : e}) ;
     }
 }
 
@@ -75,7 +75,7 @@ const Read   = async (req , res) => {
         res.status(200).json(ret) ;
     }catch(e)
     {
-       res.status(500).json({message : e}) ; 
+       res.status(500).json({error : e}) ; 
     }
 }
 
@@ -85,7 +85,7 @@ const ReadAll = async (req , res) =>{
         res.status(200).json(users) ;
     }catch(e)
     {
-        res.status(500).json({message : e}) ;
+        res.status(500).json({error : e}) ;
     }
 }
 
@@ -97,7 +97,7 @@ const GetListZone = async(req , res) =>{
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 

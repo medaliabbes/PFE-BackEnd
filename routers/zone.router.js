@@ -3,6 +3,12 @@
 const ZoneController = require('./../controllers/zone.controller') ;
 const router         = require('express').Router() ;
 
+
+const middleware = (req , res , next )=>{
+    req.params.id = "1";
+    console.log("Play with request") ;
+    next() ;
+}
 /**
  * @Note Authorization middleware should be added here
  */

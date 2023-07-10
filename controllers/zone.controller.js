@@ -19,7 +19,7 @@ const Create = async (req , res) => {
     }catch(error)
     {
         console.error(error) ; 
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -38,7 +38,7 @@ const Update = async (req , res) => {
     catch(error)
     {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -54,7 +54,7 @@ const Delete = async (req , res) => {
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -69,7 +69,7 @@ const Read = async (req , res) => {
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -86,7 +86,7 @@ const GetListOfDevices =  async(req , res) =>{
     }catch(error)
     {
         console.log(error)
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -100,7 +100,7 @@ const GetListOfScheduler = async(req , res) =>{
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json({message : error}) ;
+        res.status(500).json({error : error}) ;
     }
 }
 
@@ -112,7 +112,7 @@ const GetAll = async (req , res) => {
     }catch(error)
     {
         console.log(error) ;
-        res.status(500).json( {message : error}) ;
+        res.status(500).json( {error : error}) ;
     }
 }
 

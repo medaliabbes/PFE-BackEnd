@@ -1,6 +1,7 @@
-è
+
 const deviceController   = require('./../controllers/device.controller') ;
 const router             = require('express').Router() ;
+
 
 
 router.post('/' , deviceController.Create )  ; 
