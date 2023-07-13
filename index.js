@@ -37,8 +37,12 @@ app.use('/api/v1/scheduler'   , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
 
-app.use('/api/v1/device'      , DeviceRouter) ;
+app.use('/api/v1/devices'      , DeviceRouter) ;
 
+app.get('/endpoint' , function(req , res) {
+  console.log("Server working") ;
+  res.status(200).json({message :"serverWorking"}) ;
+});
 
 app.listen(process.env.APP_PORT , ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;

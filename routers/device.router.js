@@ -3,7 +3,6 @@ const deviceController   = require('./../controllers/device.controller') ;
 const router             = require('express').Router() ;
 
 
-
 router.post('/' , deviceController.Create )  ; 
 
 router.get('/:id' ,deviceController.Read)    ;
