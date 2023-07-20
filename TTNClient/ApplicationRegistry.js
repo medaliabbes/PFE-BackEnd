@@ -40,7 +40,7 @@ class ApplicationRegistryService extends Client {
             }
         } ;
 
-        super.setPath(`organizations/${appCreateRequest.collaborator.organization_ids.organization_id}/applications`) ;
+        super.setPath(`users/${appCreateRequest.collaborator.organization_ids.organization_id}/applications`) ;
 
         appCreateRequest = JSON.stringify(appCreateRequest) ;
         
@@ -76,4 +76,3 @@ class ApplicationRegistryService extends Client {
 }
 
 module.exports =  ApplicationRegistryService;
-

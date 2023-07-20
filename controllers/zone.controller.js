@@ -1,5 +1,10 @@
 
+require('dotenv').config() ; 
 const ZoneService    = require('./../services/zone.service') ;
+const TTNAppService  = require('./../TTNClient/ApplicationService') ;
+
+
+let AppService  = new TTNAppService(process.env.TTN_KEY) ;
 
 
 const Create = async (req , res) => {
@@ -13,8 +18,26 @@ const Create = async (req , res) => {
          * all zone info should be filled in the front-end including userid
          */
         const zone = req.body ;
-        const ret = await ZoneService.Create(zone) ;
-        res.status(201).json(ret) ;
+
+        let app = {
+            collaboratorid : 'medaliabbes',
+            id : "app-"+zone.name, //this can be generated  
+            name : zone.name 
+        } ;
+
+        let ret = await AppService.Create(app) ;
+        console.log(`TTN responce ${ret.statusCode}  : ${ret.body}`) ;
+
+        if(ret.statusCode != 200 && ret.statusCode != 201)
+        {
+            console.error('error') ;
+            res.status(ret.statusCode).json({message : ret.body}) ;
+        }
+        else{
+            ret = await ZoneService.Create(zone) ;
+
+            res.status(201).json(ret) ;
+        }
 
     }catch(error)
     {
@@ -48,8 +71,21 @@ const Delete = async (req , res) => {
          * user Permission should be checked in a middleware before this controller
          */
         const id = req.params.id ;
-        let ret  = await ZoneService.Delete(id) ;
-        res.status(200).json(ret)  ;
+
+        let zone  = await ZoneService.Read(id) ;
+        
+        let apiRes = await AppService.Delete("app-"+zone.name) ;     
+
+        console.log(`${apiRes.statusCode } : ${apiRes.body}`) ;
+
+        if(apiRes.statusCode == 200)
+        {
+            let ret  = await ZoneService.Delete(id) ;
+            res.status(200).json(ret)  ;
+            
+        }else{
+            res.status(apiRes.statusCode).json({message : apiRes.body}) ;
+        }
 
     }catch(error)
     {
