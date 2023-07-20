@@ -9,12 +9,15 @@ const middleware = (req , res , next )=>{
     console.log("Play with request") ;
     next() ;
 }
+
 /**
  * @Note Authorization middleware should be added here
+ * Also , an API controller can be added ,to handle interaction with ttn api 
+ * before saving the data .
  */
 router.post('/'      , ZoneController.Create) ;
 
-router.get('/'       , ZoneController.GetAll ) ;
+router.get('/'       , ZoneController.GetAll );
 
 router.get('/:id'    , ZoneController.Read)   ;
 

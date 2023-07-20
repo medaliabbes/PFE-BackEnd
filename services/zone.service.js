@@ -46,6 +46,12 @@ async function ReadAll()
     return await ZoneModel.find() ;
 }
 
+async function GetTTnId(id)
+{
+    let zone = await ZoneModel.findById(id) ;
+    return zone.ttnid ;
+}
+
 module.exports = { Create , Update , Delete , Read ,
-                   GetListOfDevices , GetListOfScheduler , ReadAll } ;
+                   GetListOfDevices , GetListOfScheduler , ReadAll ,GetTTnId} ;
 

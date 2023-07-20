@@ -17,15 +17,18 @@ const Create = async (req , res) => {
         /**
          * all zone info should be filled in the front-end including userid
          */
-        const zone = req.body ;
+        let zone = req.body ;
+
+        zone.ttnid  = "app-"+zone.name ; 
 
         let app = {
             collaboratorid : 'medaliabbes',
-            id : "app-"+zone.name, //this can be generated  
+            id   : "app-"+zone.name , //this can be generated  
             name : zone.name 
         } ;
-
+        
         let ret = await AppService.Create(app) ;
+
         console.log(`TTN responce ${ret.statusCode}  : ${ret.body}`) ;
 
         if(ret.statusCode != 200 && ret.statusCode != 201)
@@ -72,9 +75,9 @@ const Delete = async (req , res) => {
          */
         const id = req.params.id ;
 
-        let zone  = await ZoneService.Read(id) ;
-        
-        let apiRes = await AppService.Delete("app-"+zone.name) ;     
+        const ttnid  = await ZoneService.GetTTnId(id) ;
+        console.log('ttnid : ' , ttnid) ;
+        let apiRes = await AppService.Delete(ttnid) ;     
 
         console.log(`${apiRes.statusCode } : ${apiRes.body}`) ;
 

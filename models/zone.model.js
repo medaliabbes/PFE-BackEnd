@@ -11,6 +11,7 @@ const Zone = mongoose.Schema({
                 },
     name     : String ,
     location : String ,
+    ttnid    : String //Zone idin ttn network 
 });
 
 
