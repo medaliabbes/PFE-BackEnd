@@ -10,8 +10,7 @@ const DeviceRouter      = require('./routers/device.router') ;
 const SchedulerRouter   = require('./routers/scheduler.router') ;
 const ZoneRouter        = require('./routers/zone.router') ;
 const UserCommandRouter = require('./routers/usercommand.router') ;
-
-
+const AuthMiddleware    = require('./middlewares/auth.middleware') ;
 
 
 
@@ -31,6 +30,11 @@ app.use(cors({
 
 app.use(express.json());
 
+app.use('/api/v1/registre' , AuthMiddleware.registre) ;
+
+//this route return JWT in case the user existe 
+app.use('/api/v1/login'       , AuthMiddleware.login)  ;
+
 app.use('/api/v1/users'       , UserRouter) ;
 
 app.use('/api/v1/zones'       , ZoneRouter) ;
@@ -39,7 +43,7 @@ app.use('/api/v1/scheduler'   , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
 
-app.use('/api/v1/devices'      , DeviceRouter) ;
+app.use('/api/v1/devices'     , DeviceRouter) ;
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;

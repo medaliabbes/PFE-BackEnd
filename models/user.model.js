@@ -18,7 +18,7 @@ const User = mongoose.Schema({
     name       : String ,
     profilepic : String ,
     password   : String ,
-    permissionLevel : Number , //farmer , worker 
+    permissionLevel : { type : Number , default : 2 } //farmer , worker 
 });
 
 module.exports = mongoose.model('user' , User);
