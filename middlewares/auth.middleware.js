@@ -29,7 +29,6 @@ const login = async (req , res , next) => {
     
     try{
         const email    = req.body.email ;
-        //file:///home/dali/Desktop/nodeTuto/crud/Middelwares/users.middleware.js
         
         const password = req.body.password ;
 
@@ -58,7 +57,8 @@ const login = async (req , res , next) => {
 const registre = async(req , res , next ) => {
     try{
         const user = req.body ;
-        
+
+        //check if the email is used 
         const checkuser = await userService.GetUserByEmail(user.email) ;
         
         console.log("checkuser :" ,checkuser) ;
@@ -69,7 +69,12 @@ const registre = async(req , res , next ) => {
             res.status(200).json({message : "user exist"}) ;
         }
         else{
-            //const ret = await userService.Create(user) ;
+            //hash the password 
+            user.password = bcrypt.hashSync(user.password , 8);
+
+            //save user to database
+            const ret = await userService.Create(user) ;
+
             res.status(200).json(ret) ;
         }
         
