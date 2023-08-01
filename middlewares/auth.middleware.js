@@ -1,5 +1,4 @@
 
-//const mongoose    = require("mongoose") ;
 const userService = require("./../services/user.service") ; 
 const bcrypt      = require('bcrypt');
 const jwt         = require('jsonwebtoken') ;
@@ -7,24 +6,31 @@ const jwt         = require('jsonwebtoken') ;
 //Unothorized error code 401 
 
 /**
- * 
- * @param {*} req 
- * @param {*} res 
- * @param {*} next 
+ * this middleware will validate the token send by the client 
  */
-
 const authenticateUser = async (req , res , next) => {
     
     try{
-        
+        if (req.headers && req.headers.authorization && 
+            req.headers.authorization.split(' ')[0] === 'JWT') 
+            {
+                console.log("verifier token : ",req.headers.authorization.split(' ')[1] );
+                const decode = await jwt.verify(req.headers.authorization.split(' ')[1],
+                 process.env.JWT_SECRET);
+                console.log(decode) ;
+                //res.status(200).json({message : "ok"}) ;
+                next() ;
+            } 
     }catch(e)
     {
-        
+        res.status(500).json({message : e}) ;
     }
 }
 
 
-
+/**
+ * login will check user existance in the database and generate a token 
+ */
 const login = async (req , res , next) => {
     
     try{
@@ -53,7 +59,9 @@ const login = async (req , res , next) => {
     }
 }
 
-
+/**
+ * registre will add user if dosn't exist 
+ */
 const registre = async(req , res , next ) => {
     try{
         const user = req.body ;
@@ -86,4 +94,8 @@ const registre = async(req , res , next ) => {
     }
 }
 
-module.exports = { authenticateUser , login , registre };
+const testMiddleware = (req , res) => {
+    res.status(200).json({message : "success"}) ;
+}
+
+module.exports = { authenticateUser, login, registre, testMiddleware };
