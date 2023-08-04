@@ -1,5 +1,5 @@
 
-const userService = require("./../services/user.service") ; 
+const userService = require("../services/user.service") ; 
 const bcrypt      = require('bcrypt');
 const jwt         = require('jsonwebtoken') ;
 
@@ -16,8 +16,9 @@ const authenticateUser = async (req , res , next) => {
             {
                 console.log("verifier token : ",req.headers.authorization.split(' ')[1] );
                 const decode = await jwt.verify(req.headers.authorization.split(' ')[1],
-                 process.env.JWT_SECRET);
-                console.log(decode) ;
+                    process.env.JWT_SECRET);
+                //console.log(decode) ;
+                req.user = decode ; 
                 //res.status(200).json({message : "ok"}) ;
                 next() ;
             } 

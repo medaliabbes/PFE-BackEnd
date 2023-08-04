@@ -35,5 +35,10 @@ async function GetSchedulerList(deviceid)
     return await schedulerModel.find({device : deviceid}) ;
 }
 
+async function GetUserListOfDevices(userid)
+{
+    return await deviceModel.find({ ownerid : userid}) ;
+}
 
-module.exports = { Create , Update , Delete , Read , GetAlertList , GetSchedulerList } ;
+module.exports = { Create , Update , Delete , Read ,
+                   GetAlertList , GetSchedulerList , GetUserListOfDevices} ;

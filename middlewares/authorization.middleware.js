@@ -1,23 +1,27 @@
 
 
-const bcrypt        = require('bcrypt');
-const userService   = require('./../services/user.service') ;
+const bcrypt           = require('bcrypt');
+const userService      = require('./../services/user.service') ;
+const deviceService    = require('./../services/device.service') ;
 
 const deviceAuthorization   = (req , res , next) => {
     try{
-        if(req.method === 'GET')
+
+        console.log("user :",req.user) ;
+
+        if(req.method === 'GET')//read
         {
             console.log('myget');
         }
-        else if(req.method === 'DELETE')
+        else if(req.method === 'DELETE')//delete
         {
 
         }
-        else if(req.method === 'POST')
+        else if(req.method === 'POST')//create
         {
             
         }
-        else if(req.method === 'PUT')
+        else if(req.method === 'PUT')//update
         {
             
         }

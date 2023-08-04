@@ -5,6 +5,8 @@ const router             = require('express').Router() ;
 
 router.post('/' , deviceController.Create )  ; 
 
+router.get('/', deviceController.GetUserListOfDevices) ;
+
 router.get('/:id' ,deviceController.Read)    ;
 
 router.put('/:id' , deviceController.Update) ;
