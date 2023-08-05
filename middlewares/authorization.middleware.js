@@ -3,30 +3,67 @@
 const bcrypt           = require('bcrypt');
 const userService      = require('./../services/user.service') ;
 const deviceService    = require('./../services/device.service') ;
+const permissionmodule = require('./permission.middleware') ;
 
-const deviceAuthorization   = (req , res , next) => {
+const deviceAuthorization   = async (req , res , next) => {
     try{
 
         console.log("user :",req.user) ;
 
+        console.log(req.user.id) ;
+
+        const permissionCode = await userService.GetUserPermissionLevel(req.user.id) ;
+
+        console.log(permissionCode) ;
+
+        let userpermission = new permissionmodule.permission(permissionCode) ;
+
         if(req.method === 'GET')//read
         {
-            console.log('myget');
+            //console.log('myget');
+            if(userpermission.DEVICES.isReadPermitted() == true)
+            {
+                console.log("req Permitted") ;
+                next() ;
+            }
         }
         else if(req.method === 'DELETE')//delete
         {
-
+            if(userpermission.DEVICES.isDeletePermitted() == true)
+            {
+                console.log("req Permitted") ;
+                next() ;
+            }
         }
         else if(req.method === 'POST')//create
         {
-            
+            if(userpermission.DEVICES.isCreatePermitted() == true)
+            {
+                console.log("req Permitted") ;
+                next() ;
+            }
         }
         else if(req.method === 'PUT')//update
         {
-            
+            console.log("put req") ;
+            console.log(userpermission.DEVICES.isUpdatePermitted() ) ;
+            if(userpermission.DEVICES.isUpdatePermitted() == true)
+            {
+                console.log("req Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized Request") ;
+                res.status(401).json({message : "Unauthorized Request"}) ;
+            }
         }
-        console.log(req.method) ;
-        next() ;
+        else{
+            console.log("Unauthorized Request") ;
+            res.status(401).json({message : "Unauthorized Request"}) ;
+        }
+        //console.log(req.method) ;
+        //next() ;
+        
     }catch(e)
     {
         console.log(e) ;

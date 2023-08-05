@@ -57,6 +57,11 @@ async function GetListOfZones(userid)
     return await ZoneModel.find({ userid: userid}) ;
 }
 
+async function GetUserPermissionLevel(userid)
+{
+    let user = await UserModel.findOne({_id : userid}) ;
+    return user.permissionLevel ; 
+}
 module.exports = { Create , Update , Delete , Read , ReadAll ,
-                   GetAddById , GetUserByEmail , GetListOfZones } ;
+                   GetAddById , GetUserByEmail , GetListOfZones ,GetUserPermissionLevel } ;
 

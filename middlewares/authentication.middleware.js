@@ -66,7 +66,7 @@ const login = async (req , res , next) => {
 const registre = async(req , res , next ) => {
     try{
         const user = req.body ;
-
+        //console.log(user);
         //check if the email is used 
         const checkuser = await userService.GetUserByEmail(user.email) ;
         

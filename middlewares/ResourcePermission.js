@@ -123,5 +123,6 @@ function isDeletePermitted(permissionCode  , resource)
 }
 
 
-module.exports = { setPermission , isCreatePermitted , isReadPermitted ,
-                   isDeletePermitted , isUpdatePermitted , RESOURCES , CRUD_PERMISSION } ;
+module.exports = { setPermission     , isCreatePermitted , isReadPermitted ,
+                   isDeletePermitted , isUpdatePermitted , RESOURCES       ,
+                   CRUD_PERMISSION } ;
