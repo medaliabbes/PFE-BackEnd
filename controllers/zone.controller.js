@@ -2,9 +2,17 @@
 require('dotenv').config() ; 
 const ZoneService    = require('./../services/zone.service') ;
 const TTNAppService  = require('./../TTNClient/ApplicationService') ;
-
-
 let AppService  = new TTNAppService(process.env.TTN_KEY) ;
+
+/**
+ *@Note : post request for zone should have those param only :
+ *                          {
+                                "userid" : "64d4cb52fca706a550e9756b",
+                                "name"   : "mychebba-zone",
+                                "location" : "chebba"
+                            } 
+ *
+ */
 
 
 const Create = async (req , res) => {
@@ -143,10 +151,13 @@ const GetListOfScheduler = async(req , res) =>{
     }
 }
 
-
-const GetAll = async (req , res) => {
+/*
+ * Get zones of a particular user , the user id should be provided by the middleware 
+ * after checking the JWT 
+ */
+const GetUserZones = async (req , res) => {
     try{
-        const ret  =  await ZoneService.ReadAll() ;
+        const ret  =  await ZoneService.GetUserZones(req.user.id) ;
         res.status(200).json(ret) ;
     }catch(error)
     {
@@ -156,4 +167,4 @@ const GetAll = async (req , res) => {
 }
 
 module.exports = { Create , Update , Delete , Read ,
-                   GetListOfDevices , GetListOfScheduler , GetAll} ;
+                   GetListOfDevices , GetListOfScheduler , GetUserZones} ;

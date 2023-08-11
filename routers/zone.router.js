@@ -17,7 +17,7 @@ const middleware = (req , res , next )=>{
  */
 router.post('/'      , ZoneController.Create) ;
 
-router.get('/'       , ZoneController.GetAll );
+router.get('/'       , ZoneController.GetUserZones );
 
 router.get('/:id'    , ZoneController.Read)   ;
 

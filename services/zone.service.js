@@ -52,6 +52,10 @@ async function GetTTnId(id)
     return zone.ttnid ;
 }
 
-module.exports = { Create , Update , Delete , Read ,
+async function GetUserZones(userid)
+{
+    return await ZoneModel.find({ userid: userid})
+}
+module.exports = { Create , Update , Delete , Read , GetUserZones,
                    GetListOfDevices , GetListOfScheduler , ReadAll ,GetTTnId} ;
 

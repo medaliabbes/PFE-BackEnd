@@ -71,8 +71,67 @@ const deviceAuthorization   = async (req , res , next) => {
     }
 }
 
-const zoneAuthorization     = (req , res , next) => {
+const zoneAuthorization     = async (req , res , next) => {
     try{
+        console.log("user :",req.user) ;
+
+        console.log(req.user.id) ;
+
+        const permissionCode = await userService.GetUserPermissionLevel(req.user.id) ;
+
+        let userpermission   = new permissionmodule.permission(permissionCode) ;
+
+        if(req.method === "POST") 
+        {
+            if(userpermission.ZONES.isCreatePermitted()==true)
+            {
+                console.log("POST Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized request") ;
+                res.status(401).json({message : "Unauthorized Request"}) ;
+            }
+        }
+        else if(req.method === "GET")
+        {
+            if(userpermission.ZONES.isReadPermitted()==true)
+            {
+                console.log("GET Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized request") ;
+                res.status(401).json({message : "Unauthorized Request"}) ;
+            }
+        }
+        else if(req.method === "PUT")
+        {
+            if(userpermission.ZONES.isUpdatePermitted()==true)
+            {
+                console.log("PUT Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized request") ;
+                res.status(401).json({message : "Unauthorized Request"}) ;
+            }
+        }
+        else if(req.method === "DELETE")
+        {
+            if(userpermission.ZONES.isDeletePermitted()==true)
+            {
+                console.log("DELETE Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized request") ;
+                res.status(401).json({message : "Unauthorized Request"}) ;
+            }
+        }
+        else{
+            console.log("unknown error ") ;
+        }
 
     }catch(e)
     {

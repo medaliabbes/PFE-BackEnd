@@ -40,7 +40,7 @@ app.use('/api/v1/login'       , authentication.login)  ;
 
 app.use('/api/v1/users'       , UserRouter) ;
 
-app.use('/api/v1/zones'       , ZoneRouter) ;
+app.use('/api/v1/zones'       , authentication.authenticateUser ,authorization.zoneAuthorization, ZoneRouter) ;
 
 app.use('/api/v1/scheduler'   , SchedulerRouter) ;
  
