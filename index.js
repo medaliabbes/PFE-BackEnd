@@ -38,7 +38,7 @@ app.use('/api/v1/registre' , authentication.registre) ;
 //this route return JWT in case the user existe 
 app.use('/api/v1/login'       , authentication.login)  ;
 
-app.use('/api/v1/users'       , UserRouter) ;
+app.use('/api/v1/users'       , authentication.authenticateUser ,authorization.userAuthorization, UserRouter) ;
 
 app.use('/api/v1/zones'       , authentication.authenticateUser ,authorization.zoneAuthorization, ZoneRouter) ;
 
@@ -56,3 +56,12 @@ app.get('/endpoint' , function(req , res) {
 app.listen(process.env.APP_PORT , ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;
 }) ;
+
+/*
+    {
+        "email" : "hamma1@gmail.com",
+        "name"  : "dali1" ,
+        "password" : "dali1997" ,
+        "permissionLevel" : 278772
+    }
+*/

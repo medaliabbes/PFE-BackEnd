@@ -89,6 +89,18 @@ const ReadAll = async (req , res) =>{
     }
 }
 
+const GetUserAddedBy = async (req , res) => {
+
+    try{
+        const users = await UserService.GetAddById(req.user.id) ;
+        res.status(200).json(users) ;
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json(e) ;
+    }
+}
+
 const GetListZone = async(req , res) =>{
     try{
         const id = req.params.id ;
@@ -102,4 +114,7 @@ const GetListZone = async(req , res) =>{
 }
 
 
-module.exports = { Create , Update , Delete , Read , ReadAll , GetListZone } ;
+module.exports = { Create , Update , Delete , Read ,
+                   ReadAll , GetListZone , GetUserAddedBy } ;
+
+                   

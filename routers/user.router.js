@@ -14,7 +14,10 @@ const UserController       = require('./../controllers/user.controller');
 
 router.post('/' , UserController.Create ) ;
 
-router.get('/'  , UserController.ReadAll) ;
+router.get('/'  , UserController.GetUserAddedBy ) ;//UserController.ReadAll) ;
+
+//Only for test purposes
+router.get('/all' , UserController.ReadAll) ;
 
 router.get('/:id' , UserController.Read) ;
 
@@ -23,5 +26,7 @@ router.put('/:id' , UserController.Update) ;
 router.delete('/:id'    , UserController.Delete) ;
 
 router.get('/:id/zones' , UserController.GetListZone) ;
+
+
 
 module.exports = router ;

@@ -10,9 +10,9 @@ const deviceAuthorization   = async (req , res , next) => {
 
         console.log("user :",req.user) ;
 
-        console.log(req.user.id) ;
+        //console.log(req.user.id) ;
 
-        const permissionCode = await userService.GetUserPermissionLevel(req.user.id) ;
+        const permissionCode = req.user.iam ; //await userService.GetUserPermissionLevel(req.user.id) ;
 
         console.log(permissionCode) ;
 
@@ -77,7 +77,7 @@ const zoneAuthorization     = async (req , res , next) => {
 
         console.log(req.user.id) ;
 
-        const permissionCode = await userService.GetUserPermissionLevel(req.user.id) ;
+        const permissionCode = req.user.iam ;
 
         let userpermission   = new permissionmodule.permission(permissionCode) ;
 
@@ -142,7 +142,58 @@ const zoneAuthorization     = async (req , res , next) => {
 
 const userAuthorization     = (req , res , next) => {
     try{
+        let userpermission   = new permissionmodule.permission(req.user.iam) ;
 
+        if(req.method === "POST")
+        {
+            if(userpermission.USERS.isCreatePermitted() == true)
+            {
+                console.log("USERS POST Permitted") ;
+                req.body.addby = req.user.id ; 
+                console.log("added by:" , req.body.addby) ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized Request") ;
+                res.status(401).json({message : "Unauthorized Request" });
+            }
+        }
+        else if(req.method === "PUT")
+        {
+            if(userpermission.USERS.isUpdatePermitted() == true)
+            {
+                console.log("USERS PUT Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized Request") ;
+                res.status(401).json({message : "Unauthorized Request" });
+            }
+        }
+        else if(req.method === "DELETE")
+        {
+            if(userpermission.USERS.isDeletePermitted() == true)
+            {
+                console.log("USERS DELETE Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized Request") ;
+                res.status(401).json({message : "Unauthorized Request" });
+            }
+        }
+        else if(req.method === "GET")
+        {
+            if(userpermission.USERS.isReadPermitted() == true)
+            {
+                console.log("USERS GET Permitted") ;
+                next() ;
+            }
+            else{
+                console.log("Unauthorized Request") ;
+                res.status(401).json({message : "Unauthorized Request" });
+            }
+        }
     }catch(e)
     {
         console.log(e) ;
