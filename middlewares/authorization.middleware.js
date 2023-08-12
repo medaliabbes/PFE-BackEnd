@@ -5,6 +5,7 @@ const userService      = require('./../services/user.service') ;
 const deviceService    = require('./../services/device.service') ;
 const permissionmodule = require('./permission.middleware') ;
 
+
 const deviceAuthorization   = async (req , res , next) => {
     try{
 
@@ -140,6 +141,21 @@ const zoneAuthorization     = async (req , res , next) => {
     }
 } 
 
+const zonePostAuthorization = (req , res , next) =>{
+    try{
+
+        if(req.user.addby != null)
+        {
+            req.user.id = req.user.addby ; 
+        }
+        next() ;
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json(e) ;
+    }
+}
+
 const userAuthorization     = (req , res , next) => {
     try{
         let userpermission   = new permissionmodule.permission(req.user.iam) ;
@@ -149,8 +165,6 @@ const userAuthorization     = (req , res , next) => {
             if(userpermission.USERS.isCreatePermitted() == true)
             {
                 console.log("USERS POST Permitted") ;
-                req.body.addby = req.user.id ; 
-                console.log("added by:" , req.body.addby) ;
                 next() ;
             }
             else{
@@ -201,6 +215,36 @@ const userAuthorization     = (req , res , next) => {
     }
 }
 
+/**
+ * 
+ * this middleware is used to set addby field ,encript the password 
+ * and set the new user permission
+ */
+const userPostAuthorization = (req , res , next ) => {
+    if(req.method == "POST") 
+    {
+        console.log("postAuthorization ");
+        //set added by field 
+        req.body.addby = req.user.id ; 
+        
+        //encrypt password
+        const password = req.body.password ;
+        req.body.password  = bcrypt.hashSync(password , 8);
+
+        //set the permission 
+        const permission = new permissionmodule.permission() ;
+        permission.DEVICES.AllowRead()   ;
+        permission.ALERTS.AllowRead()    ;
+        permission.ZONES.AllowRead()     ;
+        permission.SCHEDULER.AllowRead() ;
+
+        req.body.permissionLevel = permission.getPermissionCode() ;
+    }
+
+    next() ;
+}
+
+
 const shedulerAuthorization = (req , res , next) => {
     try{
 
@@ -233,4 +277,5 @@ const alertAuthorization    = (req , res , next) => {
 
 
 module.exports = { alertAuthorization , commandAuthorization , shedulerAuthorization , 
-                   userAuthorization  , zoneAuthorization    , deviceAuthorization  } ;
+                   userAuthorization  , zoneAuthorization    , deviceAuthorization   ,
+                   userPostAuthorization , zonePostAuthorization} ;

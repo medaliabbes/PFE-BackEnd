@@ -38,9 +38,9 @@ app.use('/api/v1/registre' , authentication.registre) ;
 //this route return JWT in case the user existe 
 app.use('/api/v1/login'       , authentication.login)  ;
 
-app.use('/api/v1/users'       , authentication.authenticateUser ,authorization.userAuthorization, UserRouter) ;
+app.use('/api/v1/users'       , authentication.authenticateUser ,authorization.userAuthorization , authorization.userPostAuthorization , UserRouter) ;
 
-app.use('/api/v1/zones'       , authentication.authenticateUser ,authorization.zoneAuthorization, ZoneRouter) ;
+app.use('/api/v1/zones'       , authentication.authenticateUser ,authorization.zoneAuthorization, authorization.zonePostAuthorization ,ZoneRouter) ;
 
 app.use('/api/v1/scheduler'   , SchedulerRouter) ;
  
