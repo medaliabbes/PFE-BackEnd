@@ -14,7 +14,8 @@ let AppService  = new TTNAppService(process.env.TTN_KEY) ;
  *
  */
 
-
+//  the userid should be set in the controller after the middleware resolve 
+//  the token and provide an object in the req caller user 
 const Create = async (req , res) => {
     try{
         /**

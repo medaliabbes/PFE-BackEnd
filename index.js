@@ -12,7 +12,9 @@ const ZoneRouter        = require('./routers/zone.router') ;
 const UserCommandRouter = require('./routers/usercommand.router') ;
 const authentication    = require('./middlewares/authentication.middleware') ;
 const authorization     = require('./middlewares/authorization.middleware') ;
-
+const deviceAuthorizationModule = require('./middlewares/deviceAuthorization.middleware') ;
+const zoneAuthorizationModule   = require('./middlewares/zoneAuthorization.middleware') ;
+const userAuthorizationModule   = require('./middlewares/userAuthorization.middleware') ;
 
 //configure mongoose
 mongoose.connect(
@@ -38,15 +40,15 @@ app.use('/api/v1/registre' , authentication.registre) ;
 //this route return JWT in case the user existe 
 app.use('/api/v1/login'       , authentication.login)  ;
 
-app.use('/api/v1/users'       , authentication.authenticateUser ,authorization.userAuthorization , authorization.userPostAuthorization , UserRouter) ;
+app.use('/api/v1/users'       , authentication.authenticateUser ,userAuthorizationModule.userAuthorization , userAuthorizationModule.userPostAuthorization , UserRouter) ;
 
-app.use('/api/v1/zones'       , authentication.authenticateUser ,authorization.zoneAuthorization, authorization.zonePostAuthorization ,ZoneRouter) ;
+app.use('/api/v1/zones'       , authentication.authenticateUser ,zoneAuthorizationModule.zoneAuthorization, zoneAuthorizationModule.zonePostAuthorization , ZoneRouter) ;
 
 app.use('/api/v1/scheduler'   , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
 
-app.use('/api/v1/devices'     , authentication.authenticateUser ,authorization.deviceAuthorization, DeviceRouter) ;
+app.use('/api/v1/devices'     , authentication.authenticateUser ,deviceAuthorizationModule.deviceAuthorization, deviceAuthorizationModule.devicePostAuthorization ,DeviceRouter) ;
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;
