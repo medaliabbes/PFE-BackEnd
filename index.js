@@ -1,17 +1,17 @@
 
 
 require('dotenv').config()
-const mongoose          = require('mongoose')  ;
-const cors              = require('cors') ;
-const express           = require('express')   ;
-const app               = express() ;
-const UserRouter        = require('./routers/user.router') ;
-const DeviceRouter      = require('./routers/device.router') ;
-const SchedulerRouter   = require('./routers/scheduler.router') ;
-const ZoneRouter        = require('./routers/zone.router') ;
-const UserCommandRouter = require('./routers/usercommand.router') ;
-const authentication    = require('./middlewares/authentication.middleware') ;
-const authorization     = require('./middlewares/authorization.middleware') ;
+const mongoose                  = require('mongoose')  ;
+const cors                      = require('cors') ;
+const express                   = require('express')   ;
+const app                       = express() ;
+const UserRouter                = require('./routers/user.router') ;
+const DeviceRouter              = require('./routers/device.router') ;
+const SchedulerRouter           = require('./routers/scheduler.router') ;
+const ZoneRouter                = require('./routers/zone.router') ;
+const UserCommandRouter         = require('./routers/usercommand.router') ;
+const authentication            = require('./middlewares/authentication.middleware') ;
+const authorization             = require('./middlewares/authorization.middleware') ;
 const deviceAuthorizationModule = require('./middlewares/deviceAuthorization.middleware') ;
 const zoneAuthorizationModule   = require('./middlewares/zoneAuthorization.middleware') ;
 const userAuthorizationModule   = require('./middlewares/userAuthorization.middleware') ;
@@ -44,7 +44,7 @@ app.use('/api/v1/users'       , authentication.authenticateUser ,userAuthorizati
 
 app.use('/api/v1/zones'       , authentication.authenticateUser ,zoneAuthorizationModule.zoneAuthorization, zoneAuthorizationModule.zonePostAuthorization , ZoneRouter) ;
 
-app.use('/api/v1/scheduler'   , SchedulerRouter) ;
+app.use('/api/v1/scheduler'   , authentication.authenticateUser , authorization.shedulerAuthorization , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
 

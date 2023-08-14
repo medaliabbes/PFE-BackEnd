@@ -20,7 +20,17 @@ async function Delete(id)
 
 async function Read(id)
 {
-    return await SchedulerModel.findOne(id) ;
+    
+    /*const ret = await SchedulerModel.find({_id : id}) ;
+    console.log(ret[0]) ;
+    return ret[0] ; */
+    return await SchedulerModel.findById(id)  ;
+   //return await SchedulerModel.findOne(id) ;//got error when using this function
+}
+
+async function ReadAll()
+{
+    return await SchedulerModel.find() ;
 }
 
 /**
@@ -43,5 +53,5 @@ async function FindZoneScheduler(zoneid)
     return await SchedulerModel.find({zone : zoneid}) ;
 }
 
-module.exports = { Create , Update , Delete , Read ,
+module.exports = { Create , Update , Delete , Read , ReadAll ,
                    FindDeviceScheduler , FindZoneScheduler} ;

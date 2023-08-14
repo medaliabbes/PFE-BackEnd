@@ -46,8 +46,9 @@ const Read = async (req , res) => {
 
     try {
         const id = req.params.id ; 
-        let ret  = SchedulerService.Read(id) ;
+        let ret  = await SchedulerService.Read(id) ;
         res.status(200).json(ret) ;
+        
     } catch (error) {
         console.error(error) ;
         res.status(500).json({error : error}) ;
@@ -78,5 +79,15 @@ const GetZoneSheduler = async(req , res) => {
     }
 }
 
+const ReadAll  = async(req,res) =>{
+    try{
+        const ret = await SchedulerService.ReadAll() ; 
+        res.status(200).json(ret) ;
+    }catch(e){
+        console.log(e) ;
+        res.status(500).json(e) ; 
+    }
+}
+
 module.exports = { Create , Update , Delete , Read ,
-                   GetDeviceSheduler , GetZoneSheduler} ;
+                   GetDeviceSheduler , GetZoneSheduler , ReadAll } ;

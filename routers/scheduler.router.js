@@ -13,11 +13,14 @@ const router  = require('express').Router() ;
 //of the scheduler belong the user making the request 
 router.post('/' , SchedulerController.Create) ;
 
+router.get('/' ,SchedulerController.ReadAll ) ;
+
 router.put('/:id' , SchedulerController.Update) ;
 
 router.delete('/:id' , SchedulerController.Delete) ;
 
 router.get('/:id' , SchedulerController.Read) ;
+
 
 /*
 router.get('/:id/devices' , SchedulerController.GetDeviceSheduler) ;
