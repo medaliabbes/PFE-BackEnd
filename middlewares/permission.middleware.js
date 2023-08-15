@@ -8,11 +8,12 @@ const PermissionModule = require('./permissionBase') ;
  */
 
 class permission {
-    DEVICES   = new PermissionModule.PermissionBase() ;
-    ZONES     = new PermissionModule.PermissionBase() ;
-    USERS     = new PermissionModule.PermissionBase() ;
-    ALERTS    = new PermissionModule.PermissionBase() ;
-    SCHEDULER = new PermissionModule.PermissionBase() ;
+    DEVICES     = new PermissionModule.PermissionBase() ;
+    ZONES       = new PermissionModule.PermissionBase() ;
+    USERS       = new PermissionModule.PermissionBase() ;
+    ALERTS      = new PermissionModule.PermissionBase() ;
+    SCHEDULER   = new PermissionModule.PermissionBase() ;
+    USERCOMMAND = new PermissionModule.PermissionBase() ;
 
     constructor(permissionCode = 0)
     {
@@ -21,13 +22,14 @@ class permission {
         this.USERS.setResource(PermissionModule.RESOURCES.USERS).setPermissionCode(permissionCode) ;
         this.ALERTS.setResource(PermissionModule.RESOURCES.ALERTS).setPermissionCode(permissionCode) ;
         this.SCHEDULER.setResource(PermissionModule.RESOURCES.SCHEDULER).setPermissionCode(permissionCode) ; 
+        this.USERCOMMAND.setResource(PermissionModule.RESOURCES.USERCOMMAND).setPermissionCode(permissionCode) ;
     }
 
     getPermissionCode()
     {
         let pCode = this.DEVICES.getPermissionCode() | this.ALERTS.getPermissionCode() |
                     this.USERS.getPermissionCode() | this.ZONES.getPermissionCode() |
-                    this.SCHEDULER.getPermissionCode() ;
+                    this.SCHEDULER.getPermissionCode() |this.USERCOMMAND.getPermissionCode();
         return pCode ;
     }
 
@@ -38,6 +40,7 @@ class permission {
         this.SCHEDULER.setPermissionCode(pCode) ;
         this.ZONES.setPermissionCode(pCode) ;
         this.ALERTS.setPermissionCode(pCode) ;
+        this.USERCOMMAND.setPermissionCode(pCode) ;
     }
 }
 

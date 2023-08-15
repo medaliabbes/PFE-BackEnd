@@ -1,20 +1,20 @@
 
 
 require('dotenv').config()
-const mongoose                  = require('mongoose')  ;
-const cors                      = require('cors') ;
-const express                   = require('express')   ;
-const app                       = express() ;
-const UserRouter                = require('./routers/user.router') ;
-const DeviceRouter              = require('./routers/device.router') ;
-const SchedulerRouter           = require('./routers/scheduler.router') ;
-const ZoneRouter                = require('./routers/zone.router') ;
-const UserCommandRouter         = require('./routers/usercommand.router') ;
-const authentication            = require('./middlewares/authentication.middleware') ;
-const authorization             = require('./middlewares/authorization.middleware') ;
-const deviceAuthorizationModule = require('./middlewares/deviceAuthorization.middleware') ;
-const zoneAuthorizationModule   = require('./middlewares/zoneAuthorization.middleware') ;
-const userAuthorizationModule   = require('./middlewares/userAuthorization.middleware') ;
+const mongoose                    = require('mongoose')  ;
+const cors                        = require('cors') ;
+const express                     = require('express')   ;
+const app                         = express() ;
+const UserRouter                  = require('./routers/user.router') ;
+const DeviceRouter                = require('./routers/device.router') ;
+const SchedulerRouter             = require('./routers/scheduler.router') ;
+const ZoneRouter                  = require('./routers/zone.router') ;
+const UserCommandRouter           = require('./routers/usercommand.router') ;
+const authentication              = require('./middlewares/authentication.middleware') ;
+const authorization               = require('./middlewares/authorization.middleware') ;
+const deviceAuthorizationModule   = require('./middlewares/deviceAuthorization.middleware') ;
+const zoneAuthorizationModule     = require('./middlewares/zoneAuthorization.middleware') ;
+const userAuthorizationModule     = require('./middlewares/userAuthorization.middleware') ;
 const schedulerAuthorizatinModule = require('./middlewares/schedulerAuthorization.middleware');
 
 //configure mongoose

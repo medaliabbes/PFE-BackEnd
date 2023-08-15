@@ -10,12 +10,13 @@
 */
 
 const RESOURCES = {
-    DEVICES   : 0 , 
-    ZONES     : 4 ,
-    USERS     : 8 ,
-    SCHEDULER : 12 ,
-    ALERTS    : 16 ,
-    LAST      : 17
+    DEVICES     : 0 , 
+    ZONES       : 4 ,
+    USERS       : 8 ,
+    SCHEDULER   : 12 ,
+    ALERTS      : 16 ,
+    USERCOMMAND : 20 ,
+    LAST        : 21
 } ;
 
 const CRUD_PERMISSION = {
@@ -52,7 +53,7 @@ function setPermission(resource , permission)
 
 function isCreatePermitted(permissionCode , resource) 
 {
-    if(permissionCode > 0xfffff || permissionCode < 0)
+    if(permissionCode > 0xffffff || permissionCode < 0)
     {
         throw new Error("Error permission code");
     }
@@ -70,7 +71,7 @@ function isCreatePermitted(permissionCode , resource)
 
 function isReadPermitted(permissionCode  , resource)
 {
-    if(permissionCode > 0xfffff || permissionCode < 0)
+    if(permissionCode > 0xffffff || permissionCode < 0)
     {
         throw new Error("Error permission code");
     }
@@ -88,7 +89,7 @@ function isReadPermitted(permissionCode  , resource)
 
 function isUpdatePermitted(permissionCode  , resource)
 {
-    if(permissionCode > 0xfffff || permissionCode < 0)
+    if(permissionCode > 0xffffff || permissionCode < 0)
     {
         throw new Error("Error permission code");
     }
@@ -106,7 +107,7 @@ function isUpdatePermitted(permissionCode  , resource)
 
 function isDeletePermitted(permissionCode  , resource) 
 {
-    if(permissionCode > 0xfffff || permissionCode < 0)
+    if(permissionCode > 0xffffff || permissionCode < 0)
     {
         throw new Error("Error permission code");
     }
