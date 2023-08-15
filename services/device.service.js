@@ -21,7 +21,7 @@ async function Delete(id)
 
 async function Read(id)
 {
-    return await deviceModel.findOne(id) ;
+    return await deviceModel.findById(id) ;
 }
 
 

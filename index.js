@@ -15,6 +15,7 @@ const authorization             = require('./middlewares/authorization.middlewar
 const deviceAuthorizationModule = require('./middlewares/deviceAuthorization.middleware') ;
 const zoneAuthorizationModule   = require('./middlewares/zoneAuthorization.middleware') ;
 const userAuthorizationModule   = require('./middlewares/userAuthorization.middleware') ;
+const schedulerAuthorizatinModule = require('./middlewares/schedulerAuthorization.middleware');
 
 //configure mongoose
 mongoose.connect(
@@ -44,7 +45,7 @@ app.use('/api/v1/users'       , authentication.authenticateUser ,userAuthorizati
 
 app.use('/api/v1/zones'       , authentication.authenticateUser ,zoneAuthorizationModule.zoneAuthorization, zoneAuthorizationModule.zonePostAuthorization , ZoneRouter) ;
 
-app.use('/api/v1/scheduler'   , authentication.authenticateUser , authorization.shedulerAuthorization , SchedulerRouter) ;
+app.use('/api/v1/scheduler'   , authentication.authenticateUser , schedulerAuthorizatinModule.schedulerAuthorization , schedulerAuthorizatinModule.schedulerPostAuthorization , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , UserCommandRouter);
 
