@@ -48,5 +48,11 @@ async function findDeviceCommand(deviceId)
     return await userCommandModel.find({deviceid : deviceId}) ;
 }
 
-module.exports = { Create , Update , Delete , Read , 
+
+async function GetAllCommand()
+{
+    return await userCommandModel.find({});
+}
+
+module.exports = { Create , Update , Delete , Read , GetAllCommand ,
                    findUserCommand ,findZoneCommand ,findDeviceCommand };

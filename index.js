@@ -16,7 +16,7 @@ const deviceAuthorizationModule   = require('./middlewares/deviceAuthorization.m
 const zoneAuthorizationModule     = require('./middlewares/zoneAuthorization.middleware') ;
 const userAuthorizationModule     = require('./middlewares/userAuthorization.middleware') ;
 const schedulerAuthorizatinModule = require('./middlewares/schedulerAuthorization.middleware');
-
+const userCommandAuthorizationModule = require('./middlewares/userCommandAuthorization.middleware') ;
 //configure mongoose
 mongoose.connect(
     process.env.MONGODB_URI ,
@@ -47,7 +47,7 @@ app.use('/api/v1/zones'       , authentication.authenticateUser ,zoneAuthorizati
 
 app.use('/api/v1/scheduler'   , authentication.authenticateUser , schedulerAuthorizatinModule.schedulerAuthorization , schedulerAuthorizatinModule.schedulerPostAuthorization , SchedulerRouter) ;
  
-app.use('/api/v1/usercommand' , UserCommandRouter);
+app.use('/api/v1/usercommand' , authentication.authenticateUser , userCommandAuthorizationModule.commandAuthorization , userCommandAuthorizationModule.commandPostAuthorization ,UserCommandRouter);
 
 app.use('/api/v1/devices'     , authentication.authenticateUser ,deviceAuthorizationModule.deviceAuthorization, deviceAuthorizationModule.devicePostAuthorization ,DeviceRouter) ;
 

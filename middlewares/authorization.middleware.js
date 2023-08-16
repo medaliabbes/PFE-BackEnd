@@ -7,16 +7,6 @@ const zoneService       =  require('./../services/zone.service') ;
 const permissionmodule  =  require('./permission.middleware') ;
 
 
-const commandAuthorization  = (req , res , next) => {
-    try{
-        
-    }catch(e)
-    {
-        console.log(e) ;
-        res.status(500).json(e) ;
-    }
-}
-
 const alertAuthorization    = (req , res , next) => {
     try{
 
@@ -28,4 +18,4 @@ const alertAuthorization    = (req , res , next) => {
 }
 
 
-module.exports = { alertAuthorization , commandAuthorization } ;
+module.exports = { alertAuthorization } ;

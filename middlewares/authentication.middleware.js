@@ -82,7 +82,7 @@ const registre = async(req , res , next ) => {
             //hash the password 
             user.password = bcrypt.hashSync(user.password , 8);
             //allow all permission for registre user 
-            user.permissionLevel = 0xfffff ;
+            user.permissionLevel = 0xffffff ;
             //
             user.addby = null ;
             //save user to database

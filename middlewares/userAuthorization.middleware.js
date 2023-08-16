@@ -87,6 +87,7 @@ const userPostAuthorization = (req , res , next ) => {
         permission.ALERTS.AllowRead()    ;
         permission.ZONES.AllowRead()     ;
         permission.SCHEDULER.AllowRead() ;
+        permission.USERCOMMAND.AllowRead() ;
 
         req.body.permissionLevel = permission.getPermissionCode() ;
     }

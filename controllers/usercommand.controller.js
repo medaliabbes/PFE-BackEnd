@@ -1,3 +1,4 @@
+
 const userCommandService  = require('./../services/usercommand.service') ;
 
 
@@ -13,6 +14,8 @@ const Create = async (req , res) => {
     }
 }
 
+
+//remove this method 
 const Update = async (req , res) => {
     try{
         const id = req.params.id ;
@@ -26,6 +29,7 @@ const Update = async (req , res) => {
     }
 }
 
+//remove this 
 const Delete = async (req , res) => {
     try{
         const id = req.params.id ;
@@ -86,5 +90,16 @@ const GetDeviceCommand = async(req , res) => {
     }
 }
 
-module.exports = { Create , Update , Delete , Read ,
+const ReadAll = async(req , res )=>{
+    try{
+        const commands = await userCommandService.GetAllCommand() ;
+        res.status(200).json(commands) ;
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json(e) ;
+    }
+}
+
+module.exports = { Create , Update , Delete , Read , ReadAll ,
                    GetUserCommand , GetZoneCommands , GetDeviceCommand };

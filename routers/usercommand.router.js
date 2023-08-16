@@ -4,6 +4,8 @@ const router = require('express').Router() ;
 
 router.post('/'      , userCommandController.Create) ;
 
+router.get('/'       , userCommandController.ReadAll);
+
 router.get('/:id'    , userCommandController.Read) ;
 
 router.put('/:id'    , userCommandController.Update) ;

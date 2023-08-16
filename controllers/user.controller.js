@@ -2,6 +2,16 @@
 const userModel = require('../models/user.model');
 const UserService = require('./../services/user.service') ;
 
+
+/**
+ * to add user 
+ * {
+    "email" : "test2@gmail.com",
+    "name"  : "test2" ,
+    "password" : "dali1997" ,
+    "permissionLevel" : 16777215
+}
+ */
 /**
  * Controller should parse the request data and pass objects to the service
  * 
