@@ -9,6 +9,7 @@ const UserRouter                  = require('./routers/user.router') ;
 const DeviceRouter                = require('./routers/device.router') ;
 const SchedulerRouter             = require('./routers/scheduler.router') ;
 const ZoneRouter                  = require('./routers/zone.router') ;
+const AlertRouter                 = require('./routers/alert.router') ;
 const UserCommandRouter           = require('./routers/usercommand.router') ;
 const authentication              = require('./middlewares/authentication.middleware') ;
 const authorization               = require('./middlewares/authorization.middleware') ;
@@ -33,7 +34,7 @@ app.use(cors({
 
 app.use(express.json());
 
-//testing end point 
+//testing end point (remove in production)
 app.use('/api/v1/auth' , authentication.authenticateUser , authentication.testMiddleware) ;
 
 app.use('/api/v1/registre' , authentication.registre) ;
@@ -49,7 +50,9 @@ app.use('/api/v1/scheduler'   , authentication.authenticateUser , schedulerAutho
  
 app.use('/api/v1/usercommand' , authentication.authenticateUser , userCommandAuthorizationModule.commandAuthorization , userCommandAuthorizationModule.commandPostAuthorization ,UserCommandRouter);
 
-app.use('/api/v1/devices'     , authentication.authenticateUser ,deviceAuthorizationModule.deviceAuthorization, deviceAuthorizationModule.devicePostAuthorization ,DeviceRouter) ;
+app.use('/api/v1/devices'     , authentication.authenticateUser , deviceAuthorizationModule.deviceAuthorization, deviceAuthorizationModule.devicePostAuthorization ,DeviceRouter) ;
+
+app.use('/api/v1/alerts'      , authentication.authenticateUser , authorization.alertAuthorization ,authorization.alertPostAuthorization,  AlertRouter) ;
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;

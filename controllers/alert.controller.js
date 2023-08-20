@@ -5,7 +5,8 @@ const alertService  = require('./../services/alert.service') ;
 
 const Create = async(req , res) => {
     try{
-        const alert = req.body ;
+        let alert = req.body ;
+        alert.userid = req.user.id ;
         const ret = await alertService.Create(alert) ;
         res.status(201).json(ret) ;
     }catch(error)
@@ -43,7 +44,7 @@ const Delete = async(req , res )=>{
     }
 }
 
-const Read = async(res, res) =>{
+const Read = async(req, res) =>{
     try{
         const id = req.params.id ; 
 
@@ -74,4 +75,16 @@ const GetDeviceAlert = async (req,res) =>{
     }
 }
 
-module.exports = { Create , Update , Delete , Read , GetDeviceAlert } ;
+const ReadAll = async (req , res) =>{
+    try{
+        const alerts = await alertService.ReadAll() ;
+
+        res.status(200).json(alerts) ;
+    }catch(error)
+    {
+        console.error(error) ;
+        res.status(500).json( {error : error}) ;
+    }
+}
+
+module.exports = { Create , Update , Delete , Read , GetDeviceAlert ,ReadAll} ;

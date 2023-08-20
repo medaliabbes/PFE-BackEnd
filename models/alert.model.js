@@ -8,10 +8,10 @@ const Alert = mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId ,
         default : new mongoose.Types.ObjectId() ,
     },*/
-    deviceid : {
-        type : mongoose.Schema.Types.ObjectId ,
-        ref : 'device',
-    },
+    userid   : { type : mongoose.Schema.Types.ObjectId , ref : 'user'}  ,//user how set the alert
+    deviceid : { type : mongoose.Schema.Types.ObjectId , ref : 'device'},
+    sensor : String ,
+    threshold : Number ,
     
 });
 

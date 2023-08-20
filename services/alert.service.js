@@ -31,5 +31,10 @@ async function FindDeviceAlert(deviceid)
     return await alertModel.find({deviceid : deviceid}) ;
 }
 
-module.exports = { Create , Update , Delete , Read , FindDeviceAlert } ;
+async function ReadAll()
+{
+    return await alertModel.find({}) ;
+}
+
+module.exports = { Create , Update , Delete , Read , FindDeviceAlert , ReadAll} ;
 
