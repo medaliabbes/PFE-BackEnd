@@ -12,12 +12,12 @@ const ZoneRouter                  = require('./routers/zone.router') ;
 const AlertRouter                 = require('./routers/alert.router') ;
 const UserCommandRouter           = require('./routers/usercommand.router') ;
 const authentication              = require('./middlewares/authentication.middleware') ;
-const authorization               = require('./middlewares/authorization.middleware') ;
 const deviceAuthorizationModule   = require('./middlewares/deviceAuthorization.middleware') ;
 const zoneAuthorizationModule     = require('./middlewares/zoneAuthorization.middleware') ;
 const userAuthorizationModule     = require('./middlewares/userAuthorization.middleware') ;
 const schedulerAuthorizatinModule = require('./middlewares/schedulerAuthorization.middleware');
 const userCommandAuthorizationModule = require('./middlewares/userCommandAuthorization.middleware') ;
+const alertAuthorizationModule    = require('./middlewares/alertAuthorization.middleware') ;
 //configure mongoose
 mongoose.connect(
     process.env.MONGODB_URI ,
@@ -52,7 +52,7 @@ app.use('/api/v1/usercommand' , authentication.authenticateUser , userCommandAut
 
 app.use('/api/v1/devices'     , authentication.authenticateUser , deviceAuthorizationModule.deviceAuthorization, deviceAuthorizationModule.devicePostAuthorization ,DeviceRouter) ;
 
-app.use('/api/v1/alerts'      , authentication.authenticateUser , authorization.alertAuthorization ,authorization.alertPostAuthorization,  AlertRouter) ;
+app.use('/api/v1/alerts'      , authentication.authenticateUser , alertAuthorizationModule.alertAuthorization , alertAuthorizationModule.alertPostAuthorization,  AlertRouter) ;
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;

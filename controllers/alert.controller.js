@@ -1,18 +1,36 @@
 
 
 const alertService  = require('./../services/alert.service') ;
+const redis         = require('redis');
 
+let redisClient ;
+
+async function redisConnect()
+{
+    redisClient = redis.createClient();
+    await redisClient.connect();
+}
+
+redisConnect() ;
+
+//console.log(redisClient) ;
 
 const Create = async(req , res) => {
     try{
         let alert = req.body ;
+        
         alert.userid = req.user.id ;
+
         const ret = await alertService.Create(alert) ;
+        
+        await redisClient.rPush(alert.deviceid , JSON.stringify(alert));
+        //await redisClient.set(alert.deviceid , JSON.stringify(alert)) ;
+
         res.status(201).json(ret) ;
     }catch(error)
     {
         console.error(error) ;
-        res.status(500).json( {error : error}) ;
+        res.status(500).json(error) ;
     }
 }
 
@@ -36,6 +54,25 @@ const Delete = async(req , res )=>{
 
         const ret = await alertService.Delete(id) ;
 
+        //console.log("ret :" ,ret) ;
+
+        const redisElement = { deviceid : ret.deviceid.toString()  , 
+                               sensor   : ret.sensor    ,
+                               threshold: ret.threshold , 
+                               userid   : ret.userid.toString() 
+                             } ;
+                            
+        console.log(redisElement) ;
+        console.log(JSON.stringify(redisElement)) ;
+        await redisClient.lRem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
+        //console.log(ret) ;
+
+        //console.log(ret.deviceid.toString()) ;
+ 
+        //const r = await redisClient.del(ret.deviceid.toString());
+
+        //console.log("redis delete request :" , r) ;
+
         res.status(200).json(ret) ;
     }catch(error)
     {
@@ -49,7 +86,8 @@ const Read = async(req, res) =>{
         const id = req.params.id ; 
 
         const alert = await alertService.Read(id) ;
-
+        //let alert = await redisClient.get('64d7dc22ed015d061f656f95') ;
+        //alert = JSON.parse(alert) ;
         res.status(200).json(alert) ;
     }catch(error)
     {
