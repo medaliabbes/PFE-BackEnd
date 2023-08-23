@@ -1,15 +1,33 @@
 
 const SchedulerService    = require('./../services/scheduler.service') ;
+const redis         = require('redis');
 
+let redisClient ;
+
+async function redisConnect()
+{
+    redisClient = redis.createClient();
+    await redisClient.connect();
+}
+
+redisConnect() ;
 
 /**
- * All controller should be protected againest unothorized use 
+ * All controller should be protected againest unauthorized access 
  */
 const Create = async (req , res) => {
 
     try {
         const scheduler = req.body ;
+        
         const ret = await SchedulerService.Create(scheduler) ;
+
+        const listKey = scheduler.dayOftheWeek +'-'+scheduler.timeOftheDay ;
+
+        //a list can hold multiple scheduler of different devices and zones but have 
+        //the same start time 
+        await redisClient.rPush(listKey ,JSON.stringify( scheduler)) ;
+        
         res.status(201).json(ret) ;
     } catch (error) {
         console.error(error) ;
@@ -22,7 +40,7 @@ const Update = async (req , res) => {
     try {
         const id        = req.params.id ;
         const scheduler = req.body      ;
-        const ret = await SchedulerService.Update(id ,scheduler) ;
+        const ret       = await SchedulerService.Update(id ,scheduler) ;
         res.status(200).json(ret) ;
     } catch (error) {
         console.error(error) ;
@@ -34,7 +52,27 @@ const Delete = async (req , res) => {
 
     try {
         const id = req.params.id ; 
-        let ret  = SchedulerService.Delete(id) ;
+
+        let ret  = await SchedulerService.Delete(id) ;
+
+        let redisElement = new Object();
+
+        redisElement.dayOftheWeek = ret.dayOftheWeek ;
+        redisElement.timeOftheDay = ret.timeOftheDay ;
+        redisElement.Duration     = ret.Duration     ;
+        if(ret.zone != undefined)
+        {
+            redisElement.zone = ret.zone.toString() ;
+        }
+        else{
+            redisElement.device = ret.device.toString() ;
+        }
+        console.log(redisElement) ;
+
+        const listKey = ret.dayOftheWeek +'-'+ret.timeOftheDay ;
+
+        await redisClient.lRem(listKey , 1 , JSON.stringify(redisElement)) ;
+
         res.status(200).json(ret) ;
     } catch (error) {
         console.error(error) ;
@@ -43,10 +81,11 @@ const Delete = async (req , res) => {
 }
 
 const Read = async (req , res) => {
-
     try {
         const id = req.params.id ; 
         let ret  = await SchedulerService.Read(id) ;
+
+        
         res.status(200).json(ret) ;
         
     } catch (error) {

@@ -54,8 +54,6 @@ const Delete = async(req , res )=>{
 
         const ret = await alertService.Delete(id) ;
 
-        //console.log("ret :" ,ret) ;
-
         const redisElement = { deviceid : ret.deviceid.toString()  , 
                                sensor   : ret.sensor    ,
                                threshold: ret.threshold , 
@@ -63,17 +61,13 @@ const Delete = async(req , res )=>{
                              } ;
                             
         console.log(redisElement) ;
+        
         console.log(JSON.stringify(redisElement)) ;
+        
         await redisClient.lRem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
-        //console.log(ret) ;
-
-        //console.log(ret.deviceid.toString()) ;
- 
-        //const r = await redisClient.del(ret.deviceid.toString());
-
-        //console.log("redis delete request :" , r) ;
-
+        
         res.status(200).json(ret) ;
+
     }catch(error)
     {
         console.error(error) ;
