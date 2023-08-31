@@ -1,6 +1,7 @@
 
 
 require('dotenv').config()
+const schedule                    = require('node-schedule');
 const mongoose                    = require('mongoose')  ;
 const cors                        = require('cors') ;
 const express                     = require('express')   ;
@@ -18,6 +19,7 @@ const userAuthorizationModule     = require('./middlewares/userAuthorization.mid
 const schedulerAuthorizatinModule = require('./middlewares/schedulerAuthorization.middleware');
 const userCommandAuthorizationModule = require('./middlewares/userCommandAuthorization.middleware') ;
 const alertAuthorizationModule    = require('./middlewares/alertAuthorization.middleware') ;
+
 //configure mongoose
 mongoose.connect(
     process.env.MONGODB_URI ,
@@ -62,6 +64,16 @@ app.get('/endpoint' , function(req , res) {
 app.listen(process.env.APP_PORT , ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;
 }) ;
+
+
+/**
+ * Angular tuto can be found in : /desktop/angular/recap-tuto
+ */
+
+
+setInterval(function(){
+  //run the background task 
+} , 1000 * 60) ;
 
 /*
     {

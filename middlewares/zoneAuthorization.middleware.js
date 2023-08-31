@@ -78,6 +78,12 @@ const zonePostAuthorization = (req , res , next) =>{
         {
             req.user.id = req.user.addby ; 
         }
+
+        if(req.method ==="POST")
+        {
+            req.body.userid = req.user.id ;
+        }
+        
         next() ;
     }catch(e)
     {

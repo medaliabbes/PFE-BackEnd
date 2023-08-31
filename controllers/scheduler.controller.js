@@ -1,6 +1,6 @@
 
-const SchedulerService    = require('./../services/scheduler.service') ;
-const redis         = require('redis');
+const SchedulerService   = require('./../services/scheduler.service') ;
+const redis              = require('redis');
 
 let redisClient ;
 

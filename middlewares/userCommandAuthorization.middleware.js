@@ -13,9 +13,11 @@ const commandAuthorization  = (req , res , next) => {
         {
             if( userPermission.USERCOMMAND.isCreatePermitted() == true)
             {
+                console.log("usercommand POST Permitted") ;
                 next() ;
             }
             else{
+                console.log("usercommand POST Unauthorized") ;
                 res.status(403).json({message : 'Write Not Permitted'}) ;
             }
         }   

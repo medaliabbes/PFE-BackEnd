@@ -39,8 +39,10 @@ const login = async (req , res , next) => {
         
         const password = req.body.password ;
 
-        let user = await userService.GetUserByEmail(email) ;
+        console.log(req.body) ;
 
+        let user = await userService.GetUserByEmail(email) ;
+        
         if(bcrypt.compareSync(password , user.password))
         {
             //user exist ==> generate a jwt and return it to frontend 

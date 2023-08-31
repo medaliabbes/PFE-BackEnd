@@ -1,11 +1,22 @@
 
 const userCommandService  = require('./../services/usercommand.service') ;
-
+const deviceService       = require('./../services/device.service') ;
 
 const Create = async (req , res) => {
     try{
         const command = req.body ;
+        //when Controlling a single device 
+        if(command.deviceid )
+        {
+            const device = await deviceService.Read(command.deviceid) ;
+            
+            console.log(device) ;
+
+            console.log("MQTT Integration Should be here : ",device.eui) ;
+        }
+
         const ret = await userCommandService.Create(command) ;
+
         res.status(201).json(ret) ;
     }catch(error)
     {
