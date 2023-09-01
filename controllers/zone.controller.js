@@ -31,7 +31,7 @@ const Create = async (req , res) => {
         zone.ttnid  = "app-"+zone.name ; 
 
         let app = {
-            collaboratorid : 'medaliabbes',
+            collaboratorid : 'hboughzala',//'medaliabbes',
             id   : "app-"+zone.name , //this can be generated  
             name : zone.name 
         } ;

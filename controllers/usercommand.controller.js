@@ -1,21 +1,78 @@
 
 const userCommandService  = require('./../services/usercommand.service') ;
 const deviceService       = require('./../services/device.service') ;
+const processingModule    = require('./../utilities/messageFormater') ;
+const mqtt                = require('mqtt') ;
+
+
+
+const mqttClientOptions = {
+    clean: true, // retain session
+    connectTimeout: 4000, // Timeout period
+    clientId: 'testclient',
+    username: 'avempace-watermon',
+    password: 'NNSXS.CJZRIJFXBXKSAPFYBDBWOVOMBDOGQXUGCHTROLI.YJAHFLN5HHU7M3MMBSVDIEXV2U3IQB4EPTLYA6IHKULHYJ4OFXCQ',
+} ;
+
+const connectUrl = 'mqtts://eu1.cloud.thethings.network:8883';
+const client = mqtt.connect(connectUrl, mqttClientOptions); 
+
+client.on('connect', (error) => {
+    console.log('connecting:', error);
+    client.subscribe('#') ;//subscribe to all application topic
+}) ;
+
+client.on('message', (topic, message) => {
+    //console.log('receive message：', topic, message.toString()) ;
+    console.log('topic :' , topic) ;
+    message = JSON.parse(message) ;
+    //console.log(message)
+    try{
+        console.log("dev eui :" , message.end_device_ids.dev_eui) ;
+        console.log("dev payload :" , message.uplink_message.frm_payload) ;
+        let buff = new Buffer.from(message.uplink_message.frm_payload, 'base64');
+        let text = buff.toString('ascii');
+        console.log(buff) ;//this is the data
+    }
+    catch(err)
+    {
+        //console.log(err) ;
+        console.log("err :" , ) ;
+    }
+   
+}) ;
+
 
 const Create = async (req , res) => {
     try{
         const command = req.body ;
+
+        console.log("command : " , command) ;
         //when Controlling a single device 
         if(command.deviceid )
         {
             const device = await deviceService.Read(command.deviceid) ;
-            
-            console.log(device) ;
+        
+            //processing class 
+            let Formater = new processingModule() ;
 
-            console.log("MQTT Integration Should be here : ",device.eui) ;
+            for(let i = 0 ; i< 4 ;i++)
+            {
+                Formater.setOutputPinState(i+1 , command.command[i]) ;
+            }
+
+            const packetStringBase64 = Formater.getPayloadString64() ;
+            
+            console.log("packet :" , Formater.getPacket()) ;
+            console.log("base64 :" , packetStringBase64) ;
+
+            const payload = '{"downlinks":[{"f_port": 2,"frm_payload":"'+ packetStringBase64
+                            +'","priority": "NORMAL"}]}'
+            client.publish('v3/avempace-watermon@ttn/devices/eui-70b3d57ed005c844/down/push' ,
+                payload) ;
         }
 
-        const ret = await userCommandService.Create(command) ;
+        const ret = {} ; //await userCommandService.Create(command) ;
 
         res.status(201).json(ret) ;
     }catch(error)
@@ -40,6 +97,7 @@ const Update = async (req , res) => {
     }
 }
 
+
 //remove this 
 const Delete = async (req , res) => {
     try{
@@ -53,6 +111,7 @@ const Delete = async (req , res) => {
     }
 }
 
+
 const Read = async (req , res) => {
     try{
         const id = req.params.id ;
@@ -64,6 +123,7 @@ const Read = async (req , res) => {
         res.status(500).json({error : error}) ;
     }
 }
+
 
 const GetUserCommand  = async (req , res) => {
     try{
@@ -77,6 +137,7 @@ const GetUserCommand  = async (req , res) => {
     }
 }
 
+
 const GetZoneCommands = async (req , res) => {
     try{
         const zoneid = req.params.id ;
@@ -88,6 +149,7 @@ const GetZoneCommands = async (req , res) => {
         res.status(500).json({error : error}) ;
     }
 }
+
 
 const GetDeviceCommand = async(req , res) => {
     try{
@@ -101,6 +163,7 @@ const GetDeviceCommand = async(req , res) => {
     }
 }
 
+
 const ReadAll = async(req , res )=>{
     try{
         const commands = await userCommandService.GetAllCommand() ;
@@ -111,6 +174,7 @@ const ReadAll = async(req , res )=>{
         res.status(500).json(e) ;
     }
 }
+
 
 module.exports = { Create , Update , Delete , Read , ReadAll ,
                    GetUserCommand , GetZoneCommands , GetDeviceCommand };
