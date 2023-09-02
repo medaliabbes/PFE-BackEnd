@@ -25,11 +25,25 @@ class ApplicationService{
         return res ;
     }
 
+    async Purge(appid){
+        const res = await this.AppService.Purge(appid);
+        return res ; 
+    }
+
     async List(){
         const ListOfApp = await this.AppService.List() ;
         return ListOfApp ;
     }
 
+    async CreateApiKey(CreateappReq){
+        const apiKey = await this.AppService.CreateApiKey(CreateappReq) ;
+        return apiKey ;
+    }
+
+    async getListApiKey(appid){
+        const key = await this.AppService.getListKey(appid) ;
+        return key ;
+    }
 }
 
 module.exports = ApplicationService ;

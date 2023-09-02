@@ -8,16 +8,16 @@ const Create = async(req , res) =>
 {
     try{
          /**
-          * Request format 
+          * ADD application request format  // tested 
             {
-                "appid"  : "test-app-medali",
-                "ttnid"  : "eui-123456789abbdebb",
-                "eui"    : "123456789abbdebb",
-                "join"   : "adce78452edb999a",
+                "appid"  : "app-avempace",
+                "ttnid"  : "eui-0000112233004445",
+                "eui"    : "0000112233004445",
+                "join"   : "0001110000000111",
                 "appkey" : "ababcdcdddbb4457ababcdcdddbb4457",
-                "name"   : "my-dev-test",
-                "ownerid": "64c39db0780c475b84961e01",
-                "zoneid" : "64a83bec99dc58cac82a4556"
+                "name"   : "testing-device",
+                "ownerid": "64d6061b9e71cdea4baf15fe",
+                "zoneid" : "64f203cd35cf41eee5f16cc7"
             }
            */
         const device = req.body ;

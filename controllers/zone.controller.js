@@ -31,7 +31,7 @@ const Create = async (req , res) => {
         zone.ttnid  = "app-"+zone.name ; 
 
         let app = {
-            collaboratorid : 'hboughzala',//'medaliabbes',
+            collaboratorid : 'medaliabbes',//'hboughzala',//
             id   : "app-"+zone.name , //this can be generated  
             name : zone.name 
         } ;
@@ -39,6 +39,27 @@ const Create = async (req , res) => {
         let ret = await AppService.Create(app) ;
 
         console.log(`TTN responce ${ret.statusCode}  : ${ret.body}`) ;
+
+        //Create the application apikey
+        let date = new Date() ;
+        const m = date.getMonth() ;
+        date.setMonth(m+1) ;
+
+        let isoStr = date.toISOString() ;
+        isoStr = isoStr.split('.')[0]+'Z' ;
+
+        const CreateApplicationAPIKeyRequest = {
+            application_ids : { application_id :app.id} ,
+            name : "hello" ,
+            rights : ["RIGHT_APPLICATION_ALL"],
+            expires_at : isoStr
+        } ;
+
+        let apikey = await AppService.CreateApiKey(CreateApplicationAPIKeyRequest) ;
+
+        //console.log("apikey :" ,apikey.body) ;
+
+        console.log(`statusCode ${apikey.statusCode} : body :${apikey.body}`) ;
 
         if(ret.statusCode != 200 && ret.statusCode != 201)
         {
@@ -85,7 +106,9 @@ const Delete = async (req , res) => {
         const id = req.params.id ;
 
         const ttnid  = await ZoneService.GetTTnId(id) ;
+
         console.log('ttnid : ' , ttnid) ;
+
         let apiRes = await AppService.Delete(ttnid) ;     
 
         console.log(`${apiRes.statusCode } : ${apiRes.body}`) ;
@@ -113,6 +136,10 @@ const Read = async (req , res) => {
          */
         const id = req.params.id ; 
         const zone = await ZoneService.Read(id) ;
+        console.log(zone) ;
+        let ret = await AppService.getListApiKey(zone.ttnid) ;
+        console.log("res status :" , ret.statusCode) ;
+        console.log("app keys :" , ret.body) ;
         res.status(200).json(zone) ;
     }catch(error)
     {

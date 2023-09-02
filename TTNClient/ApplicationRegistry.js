@@ -68,11 +68,31 @@ class ApplicationRegistryService extends Client {
         return super.delete() ;
     }
 
+    Purge(ApplicationId)
+    {
+        super.setPath(`applications/${ApplicationId}/purge`) ;
+
+        return super.delete() ;
+    }
+
+    CreateApiKey(CreateappReq)
+    {
+        super.setPath(`applications/${CreateappReq.application_ids.application_id}/api-keys`) ;
+        console.log(JSON.stringify( CreateappReq ) );
+        return super.post(JSON.stringify( CreateappReq )) ;
+    }
+
     setToken(token)
     {
         super.setToken(token) ;
     }
 
+    getListKey(appid ){
+
+        super.setPath(`applications/${appid}/api-keys`) ;
+
+        return super.get() ;
+    }
 }
 
 module.exports =  ApplicationRegistryService;

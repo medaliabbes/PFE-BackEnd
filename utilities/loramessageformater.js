@@ -42,8 +42,15 @@ class LoRaMessageFormatter {
     }
 
 
-    setOutputPinState(pin , state)
+    setOutputPinState(pin , st)
     {
+        let state = 0 ;
+        if(st === 'on')
+        {
+            state = 1 ;
+        }
+        
+
         if(this.#OutputPinState == null)
         {
             this.#OutputPinState = state << pin;
