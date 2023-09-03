@@ -1,10 +1,11 @@
 
 const userCommandService  = require('./../services/usercommand.service') ;
 const deviceService       = require('./../services/device.service') ;
+const zoneservice         = require('./../services/zone.service') ;
 const processingModule    = require('./../utilities/messageFormater') ;
 const mqtt                = require('mqtt') ;
 const lmFormatter         = require('./../utilities/loramessageformater');
-
+const MQTTSender          = require('./../utilities/processingTask') ;
 
 
 const mqttClientOptions = {
@@ -52,44 +53,26 @@ const Create = async (req , res) => {
         //when Controlling a single device 
         if(command.deviceid )
         {
+
             const device = await deviceService.Read(command.deviceid) ;
-        
-            //processing class 
-            let Formater = new processingModule() ;
-
-            let m = new lmFormatter() ; 
             
-            m.setBatteryCurrent(23.2)  ;
-            m.setBatteryVoltage(13.3)  ;
-            m.setTemperature(25.22)     ;
-            m.setInverterState(1)      ;
+            const zone   = await zoneservice.Read(device.zoneid) ;
 
-            
+            console.log("MQTTSender emit" ) ;
 
-            strBase64 = Buffer.from(packet).toString('base64') ;
-            for(let i = 0 ; i< 4 ;i++)
-            {
-                m.setOutputPinState(i+1 , command.command[i]) ;
-                Formater.setOutputPinState(i+1 , command.command[i]) ;
-            }
+            MQTTSender.emit('command-device' , {
+                appid  : zone.ttnid  , 
+                appkey : zone.apikey , 
+                data   : command     , 
+                eui    : device.eui 
+            }) ;
 
-            let packet = m.Serialize() ;
-
-            const packetStringBase64 = Formater.getPayloadString64() ;
-            let strBase64 = Buffer.from(packet).toString('base64') ; 
-
-            console.log("packet :" , Formater.getPacket()) ;
-            console.log("base64 :" , packetStringBase64) ;
-
-            const payload = '{"downlinks":[{"f_port": 2,"frm_payload":"'+ strBase64//packetStringBase64
-                            +'","priority": "NORMAL"}]}'
-            client.publish('v3/app-avempace@ttn/devices/eui-'+device.eui+'/down/push' ,
-                payload) ;
         }
 
-        const ret = {} ; //await userCommandService.Create(command) ;
+        const ret = await userCommandService.Create(command) ;
 
         res.status(201).json(ret) ;
+
     }catch(error)
     {
         console.log(error) ;
@@ -117,7 +100,9 @@ const Update = async (req , res) => {
 const Delete = async (req , res) => {
     try{
         const id = req.params.id ;
+
         const ret = await userCommandService.Delete(id) ;
+        
         res.status(200).json(ret) ;
     }catch(error)
     {

@@ -48,11 +48,14 @@ async function findDeviceCommand(deviceId)
     return await userCommandModel.find({deviceid : deviceId}) ;
 }
 
+async function DeleteAll(){
+    return await userCommandModel.deleteMany({}) ;
+}
 
 async function GetAllCommand()
 {
     return await userCommandModel.find({});
 }
 
-module.exports = { Create , Update , Delete , Read , GetAllCommand ,
+module.exports = { Create , Update , Delete , Read , GetAllCommand ,DeleteAll ,
                    findUserCommand ,findZoneCommand ,findDeviceCommand };

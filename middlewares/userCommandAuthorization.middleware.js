@@ -32,9 +32,10 @@ const commandAuthorization  = (req , res , next) => {
             }
         }   
         else{
-            console.log(`${req.method} Not Allowed`) ;
+            /*console.log(`${req.method} Not Allowed`) ;
             console.log("req error") ;
-            res.status(405).json({message : 'Method Not Allowed'}) ;
+            res.status(405).json({message : 'Method Not Allowed'}) ;*/
+            next() ;
         } 
     }catch(e)
     {
