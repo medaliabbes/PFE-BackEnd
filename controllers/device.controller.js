@@ -20,7 +20,12 @@ const Create = async(req , res) =>
                 "zoneid" : "64f203cd35cf41eee5f16cc7"
             }
            */
-        const device = req.body ;
+        console.log("Create Device Req") ;
+        let device = req.body ;
+        //console.log(device) ;
+        device.ownerid = req.user.id ; 
+        //console.log(device) ;
+        
         const ttnRes = await TTNDeviceService.Create({
             appid :device.appid ,id :device.ttnid, eui :device.eui , join : device.join
             , appkey :device.appkey ,name: device.name, 
@@ -31,6 +36,7 @@ const Create = async(req , res) =>
             res.status(500).json({message : 'TTN error'}) ;
         }
         const ret    = await deviceService.Create(device) ;  
+        
         res.status(200).json(ret) ;     
     }catch(error)
     {

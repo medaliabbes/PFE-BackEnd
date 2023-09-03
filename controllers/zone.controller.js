@@ -38,9 +38,7 @@ const Create = async (req , res) => {
         
         let ret = await AppService.Create(app) ;
 
-        console.log(`TTN responce ${ret.statusCode}  : ${ret.body}`) ;
-
-        //Create the application apikey
+        //generate apikey expiration date now+1 month
         let date = new Date() ;
         const m = date.getMonth() ;
         date.setMonth(m+1) ;
@@ -48,18 +46,19 @@ const Create = async (req , res) => {
         let isoStr = date.toISOString() ;
         isoStr = isoStr.split('.')[0]+'Z' ;
 
+        //Create the application apikey
         const CreateApplicationAPIKeyRequest = {
             application_ids : { application_id :app.id} ,
-            name : "hello" ,
+            name : "first-key"+app.name ,
             rights : ["RIGHT_APPLICATION_ALL"],
             expires_at : isoStr
         } ;
 
-        let apikey = await AppService.CreateApiKey(CreateApplicationAPIKeyRequest) ;
+        let Responce = await AppService.CreateApiKey(CreateApplicationAPIKeyRequest) ;
 
-        //console.log("apikey :" ,apikey.body) ;
-
-        console.log(`statusCode ${apikey.statusCode} : body :${apikey.body}`) ;
+        const apiResp = JSON.parse( Responce.body ) ;
+       
+        console.log("application key :" , apiResp.key) ;
 
         if(ret.statusCode != 200 && ret.statusCode != 201)
         {
@@ -67,6 +66,7 @@ const Create = async (req , res) => {
             res.status(ret.statusCode).json({message : ret.body}) ;
         }
         else{
+            zone.apikey = apiResp.key ;
             ret = await ZoneService.Create(zone) ;
 
             res.status(201).json(ret) ;
@@ -106,12 +106,9 @@ const Delete = async (req , res) => {
         const id = req.params.id ;
 
         const ttnid  = await ZoneService.GetTTnId(id) ;
+        //console.log('ttnid : ' , ttnid) ;
 
-        console.log('ttnid : ' , ttnid) ;
-
-        let apiRes = await AppService.Delete(ttnid) ;     
-
-        console.log(`${apiRes.statusCode } : ${apiRes.body}`) ;
+        let apiRes = await AppService.Delete(ttnid) ;   
 
         if(apiRes.statusCode == 200)
         {
@@ -135,11 +132,11 @@ const Read = async (req , res) => {
          * user Permission should be checked in a middleware before this controller
          */
         const id = req.params.id ; 
+       
         const zone = await ZoneService.Read(id) ;
-        console.log(zone) ;
-        let ret = await AppService.getListApiKey(zone.ttnid) ;
-        console.log("res status :" , ret.statusCode) ;
-        console.log("app keys :" , ret.body) ;
+       
+        //console.log(zone) ;
+       
         res.status(200).json(zone) ;
     }catch(error)
     {
