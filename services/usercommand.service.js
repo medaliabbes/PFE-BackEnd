@@ -32,7 +32,7 @@ async function findUserCommand(userId)
  * 
  * @param {*} zoneId 
  * @returns commands executed on a particular zone
- */
+ *///find zone list of command
 async function findZoneCommand(zoneId)
 {
     return await userCommandModel.find({zoneid : zoneId}) ;

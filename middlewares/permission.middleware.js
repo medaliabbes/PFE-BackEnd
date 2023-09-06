@@ -42,6 +42,76 @@ class permission {
         this.ALERTS.setPermissionCode(pCode) ;
         this.USERCOMMAND.setPermissionCode(pCode) ;
     }
+
+    GetPermissionObject()
+    {
+        let UserPermissionObject = {
+            zones        : { Read : 0 ,Write :0},
+            devices      : { Read : 0 ,Write :0},
+            users        : { Read : 0 ,Write :0},
+            alerts       : { Read : 0 ,Write :0},
+            schedulers   : { Read : 0 ,Write :0},
+            userCommands : { Read : 0 ,Write :0}
+        } ;
+
+
+        if(this.ZONES.isReadPermitted())
+        {
+            UserPermissionObject.zones.Read = 1 ;
+        }
+        if(this.ZONES.isCreatePermitted())
+        {
+            UserPermissionObject.zones.Write = 1 ;
+        }
+
+        if(this.DEVICES.isReadPermitted())
+        {
+            UserPermissionObject.devices.Read = 1 ;
+        }
+        if(this.DEVICES.isCreatePermitted())
+        {
+            UserPermissionObject.devices.Write = 1 ;
+        }
+
+        if(this.USERS.isReadPermitted())
+        {
+            UserPermissionObject.users.Read = 1 ;
+        }
+        if(this.USERS.isCreatePermitted())
+        {
+            UserPermissionObject.users.Write = 1 ;
+        }
+
+        if(this.ALERTS.isReadPermitted())
+        {
+            UserPermissionObject.alerts.Read = 1 ;
+        }
+        if(this.ALERTS.isCreatePermitted())
+        {
+            UserPermissionObject.alerts.Write = 1 ;
+        }
+
+        if(this.SCHEDULER.isReadPermitted())
+        {
+            UserPermissionObject.schedulers.Read = 1 ;
+        }
+        if(this.SCHEDULER.isCreatePermitted())
+        {
+            UserPermissionObject.schedulers.Write = 1 ;
+        }
+
+        if(this.USERCOMMAND.isReadPermitted())
+        {
+            UserPermissionObject.userCommands.Read = 1 ;
+        }
+        if(this.USERCOMMAND.isCreatePermitted())
+        {
+            UserPermissionObject.userCommands.Write = 1 ;
+        }
+
+        return UserPermissionObject ;
+    }
+   
 }
 
 module.exports = { permission } ;

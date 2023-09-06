@@ -6,6 +6,7 @@ const userAuthorization     = (req , res , next) => {
     try{
         let userpermission   = new permissionmodule.permission(req.user.iam) ;
 
+
         if(req.method === "POST")
         {
             if(userpermission.USERS.isCreatePermitted() == true)
@@ -44,7 +45,11 @@ const userAuthorization     = (req , res , next) => {
         }
         else if(req.method === "GET")
         {
-            if(userpermission.USERS.isReadPermitted() == true)
+            if(req.path === '/permissions')
+            {
+                next() ;
+            }
+            else if(userpermission.USERS.isReadPermitted() == true)
             {
                 console.log("USERS GET Permitted") ;
                 next() ;
@@ -67,7 +72,7 @@ const userAuthorization     = (req , res , next) => {
  * and set the new user permission
  */
 const userPostAuthorization = (req , res , next ) => {
-    if(req.method == "POST") 
+    if(req.method === "POST") 
     {
         console.log("postAuthorization ");
         //set added by field 

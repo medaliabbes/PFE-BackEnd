@@ -138,6 +138,7 @@ class Client{
             console.log("Client getRequestParam() returned NULL") ;
             return ;
         }
+        
 
         let reqParam = this.getRequestParam() ;
 

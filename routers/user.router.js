@@ -16,6 +16,8 @@ router.post('/' , UserController.Create ) ;
 
 router.get('/'  , UserController.GetUserAddedBy ) ;//UserController.ReadAll) ;
 
+router.get('/permissions'   , UserController.MyPermission) ;
+
 //Only for test purposes
 router.get('/all' , UserController.ReadAll) ;
 
@@ -27,6 +29,7 @@ router.delete('/:id'    , UserController.Delete) ;
 
 router.get('/:id/zones' , UserController.GetListZone) ;
 
+router.get('/:id/permissions' , UserController.GetPermission ) ;
 
 
 module.exports = router ;

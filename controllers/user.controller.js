@@ -1,7 +1,7 @@
 
-const userModel = require('../models/user.model');
+//const userModel = require('../models/user.model');
 const UserService = require('./../services/user.service') ;
-
+const permissionmodule  =  require('./../middlewares/permission.middleware') ;
 
 /**
  * to add user 
@@ -123,8 +123,51 @@ const GetListZone = async(req , res) =>{
     }
 }
 
+const GetPermission = async(req , res) =>
+{
+    try{
+        //const userid = req.user.id ; //carful with this : it has been changed in middleware
+
+        const userid = req.params.id ; 
+        
+        const user   = await UserService.Read(userid) ;
+
+        const permission  = new permissionmodule.permission(user.permissionLevel);
+
+        const ret = permission.GetPermissionObject() ;
+
+        res.status(200).json(ret) ;
+
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json({message : e}) ;
+    }
+    
+}
+
+const MyPermission = async (req , res) =>{
+    try{
+        //const userid = req.user.id ; //carful with this : it has been changed in middleware
+
+        const userid = req.user.id ;//req.params.id ; 
+        
+        const user   = await UserService.Read(userid) ;
+
+        const permission  = new permissionmodule.permission(user.permissionLevel);
+
+        const ret = permission.GetPermissionObject() ;
+
+        res.status(200).json(ret) ;
+
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json({message : e}) ;
+    }
+}
 
 module.exports = { Create , Update , Delete , Read ,
-                   ReadAll , GetListZone , GetUserAddedBy } ;
+                   ReadAll , GetListZone , GetUserAddedBy ,GetPermission ,MyPermission} ;
 
                    

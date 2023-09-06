@@ -5,7 +5,7 @@ const zoneservice         = require('./../services/zone.service') ;
 const processingModule    = require('./../utilities/messageFormater') ;
 const mqtt                = require('mqtt') ;
 const lmFormatter         = require('./../utilities/loramessageformater');
-const MQTTSender          = require('./../utilities/processingTask') ;
+const MQTTSender          = require('../utilities/mqtt.sender') ;
 
 
 const mqttClientOptions = {
@@ -60,6 +60,7 @@ const Create = async (req , res) => {
 
             console.log("MQTTSender emit" ) ;
 
+            //Node js Worker may be suited more for publishing mqtt messages
             MQTTSender.emit('command-device' , {
                 appid  : zone.ttnid  , 
                 appkey : zone.apikey , 

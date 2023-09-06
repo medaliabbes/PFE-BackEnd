@@ -85,6 +85,8 @@ class PermissionBase{
         return this ;
     }
 
+    
+
 }
 
 module.exports = { PermissionBase , RESOURCES , PERMISSIONS} ;
