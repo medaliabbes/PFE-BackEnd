@@ -15,6 +15,11 @@ redisConnect() ;
 
 //console.log(redisClient) ;
 
+/**
+ * Add Alert to Redis and database 
+ * @param {} req 
+ * @param {*} res 
+ */
 const Create = async(req , res) => {
     try{
         let alert = req.body ;
@@ -48,6 +53,12 @@ const Update = async(req , res) => {
     }
 }
 
+
+/**
+ * Remove alert from redis and from database
+ * @param {*} req 
+ * @param {*} res 
+ */
 const Delete = async(req , res )=>{
     try{
         const id = req.params.id ; 

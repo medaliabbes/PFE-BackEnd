@@ -13,6 +13,8 @@ async function redisConnect()
 redisConnect() ;
 
 /**
+ * ADD Scheduler to Redis and database
+ * 
  * All controller should be protected againest unauthorized access 
  */
 const Create = async (req , res) => {
@@ -48,6 +50,12 @@ const Update = async (req , res) => {
     }
 }
 
+
+/**
+ * Remove scheduler from redis and database
+ * @param {} req 
+ * @param {*} res 
+ */
 const Delete = async (req , res) => {
 
     try {
@@ -67,6 +75,7 @@ const Delete = async (req , res) => {
         else{
             redisElement.device = ret.device.toString() ;
         }
+
         console.log(redisElement) ;
 
         const listKey = ret.dayOftheWeek +'-'+ret.timeOftheDay ;

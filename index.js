@@ -19,6 +19,7 @@ const userAuthorizationModule     = require('./middlewares/userAuthorization.mid
 const schedulerAuthorizatinModule = require('./middlewares/schedulerAuthorization.middleware');
 const userCommandAuthorizationModule = require('./middlewares/userCommandAuthorization.middleware') ;
 const alertAuthorizationModule    = require('./middlewares/alertAuthorization.middleware') ;
+const {Worker,isMainThread,parentPort ,workerData} = require("worker_threads");
 
 //configure mongoose
 mongoose.connect(
@@ -66,15 +67,43 @@ app.listen(process.env.APP_PORT , ()=>{
 }) ;
 
 
+
 /**
  * Angular tuto can be found in : /desktop/angular/recap-tuto
  */
 
-
+/*
 setInterval(function(){
   //run the background task 
 } , 1000 * 60) ;
+*/
 
+if (isMainThread) {
+
+
+  const AlertWorker = new Worker("./worker/AlertWorker.js", {workerData: "hello"});
+
+  console.log("Started AlertWorker.js") ;
+
+  const SchedulerWorker = new Worker("./worker/SchedulerWorker.js") ;
+
+  console.log("Started SchedulerWorker") ;
+
+  AlertWorker.on("message", msg => console.log(`Worker message received: ${msg}`));
+
+  AlertWorker.on("error", err => console.error(err));
+
+  AlertWorker.on("exit", code => console.log(`Worker exited with code ${code}.`));
+
+}
+
+else {
+
+  const data = workerData;
+
+  parentPort.postMessage(`You said \"${data}\".`);
+
+}
 /*
     {
         "email" : "hamma1@gmail.com",
