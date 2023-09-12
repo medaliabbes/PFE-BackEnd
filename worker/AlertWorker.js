@@ -32,7 +32,7 @@ const options = {
 const connectUrl      = "mqtt://broker.hivemq.com:1883" ;//'mqtts://eu1.cloud.thethings.network:8883';
 const MqttClient      = mqtt.connect(connectUrl, options);
 
-
+console.log("Alert workerr");
 MqttClient.on('connect' , (error) => {
 
     //subscribe to all application 
@@ -45,7 +45,7 @@ MqttClient.on('message' , (topic, message) => {
     
     console.log("topic :" , topic) ;
 
-    console.log("message :" , message) ;
+    //console.log("message :" , message) ;
     
     message = JSON.parse(message) ;
 

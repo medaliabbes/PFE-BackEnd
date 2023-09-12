@@ -1,6 +1,6 @@
 
 
-require('dotenv').config()
+require('dotenv').config() ;
 const schedule                    = require('node-schedule');
 const mongoose                    = require('mongoose')  ;
 const cors                        = require('cors') ;
@@ -80,20 +80,24 @@ setInterval(function(){
 
 if (isMainThread) {
 
+  const AlertWorkerLauncher = new Worker("./worker/AlertWorkerLauncher.js");
 
-  const AlertWorker = new Worker("./worker/AlertWorker.js", {workerData: "hello"});
+  //const AlertWorker = new Worker("./worker/AlertWorker.js", {workerData: "hello"});
 
-  console.log("Started AlertWorker.js") ;
+  console.log("Started Alert Launcher") ;
 
   const SchedulerWorker = new Worker("./worker/SchedulerWorker.js") ;
 
   console.log("Started SchedulerWorker") ;
 
-  AlertWorker.on("message", msg => console.log(`Worker message received: ${msg}`));
+  AlertWorkerLauncher.on("message", msg => 
+                              console.log(`Worker message received: ${msg}`));
 
-  AlertWorker.on("error", err => console.error(err));
+  AlertWorkerLauncher.on("error", err => 
+                              console.error(err));
 
-  AlertWorker.on("exit", code => console.log(`Worker exited with code ${code}.`));
+  AlertWorkerLauncher.on("exit", code => 
+                              console.log(`Worker exited with code ${code}.`));
 
 }
 

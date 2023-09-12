@@ -43,7 +43,7 @@ async function GetListOfScheduler(zoneid)
 
 async function ReadAll()
 {
-    return await ZoneModel.find() ;
+    return await ZoneModel.find({}) ;
 }
 
 async function GetTTnId(id)

@@ -1,7 +1,11 @@
 
 
 const alertService  = require('./../services/alert.service') ;
-const redis         = require('redis');
+//const redis         = require('redis');
+
+
+const Redis = require("ioredis");
+const redis = new Redis();
 
 let redisClient ;
 
@@ -11,7 +15,8 @@ async function redisConnect()
     await redisClient.connect();
 }
 
-redisConnect() ;
+
+//redisConnect() ;
 
 //console.log(redisClient) ;
 
@@ -28,9 +33,11 @@ const Create = async(req , res) => {
 
         const ret = await alertService.Create(alert) ;
         
-        await redisClient.rPush(alert.deviceid , JSON.stringify(alert));
-        //await redisClient.set(alert.deviceid , JSON.stringify(alert)) ;
+        //ioredis
+        await redis.rpush(alert.deviceid , JSON.stringify(alert));
 
+        //await redisClient.rPush(alert.deviceid , JSON.stringify(alert));
+        
         res.status(201).json(ret) ;
     }catch(error)
     {
@@ -75,7 +82,9 @@ const Delete = async(req , res )=>{
         
         console.log(JSON.stringify(redisElement)) ;
         
-        await redisClient.lRem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
+        //ioredis
+        await redis.lrem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
+        //await redisClient.lRem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
         
         res.status(200).json(ret) ;
 
@@ -91,8 +100,14 @@ const Read = async(req, res) =>{
         const id = req.params.id ; 
 
         const alert = await alertService.Read(id) ;
+        
         //let alert = await redisClient.get('64d7dc22ed015d061f656f95') ;
         //alert = JSON.parse(alert) ;
+
+        //ioredis
+        //let alert = await redis.lrange('64d7dc22ed015d061f656f95' , 0, -1);
+        //alert = JSON.parse(alert) ;
+
         res.status(200).json(alert) ;
     }catch(error)
     {
