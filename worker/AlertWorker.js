@@ -45,8 +45,6 @@ MqttClient.on('message' , (topic, message) => {
     
     console.log("topic :" , topic) ;
 
-    //console.log("message :" , message) ;
-    
     message = JSON.parse(message) ;
 
     try{

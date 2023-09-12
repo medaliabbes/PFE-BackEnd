@@ -1,6 +1,9 @@
 
 const SchedulerService   = require('./../services/scheduler.service') ;
-const redis              = require('redis');
+//const redis              = require('redis');
+
+const Redis = require("ioredis");
+const redis = new Redis();
 
 let redisClient ;
 
@@ -10,7 +13,7 @@ async function redisConnect()
     await redisClient.connect();
 }
 
-redisConnect() ;
+//redisConnect() ;
 
 /**
  * ADD Scheduler to Redis and database
@@ -28,7 +31,10 @@ const Create = async (req , res) => {
 
         //a list can hold multiple scheduler of different devices and zones but have 
         //the same start time 
-        await redisClient.rPush(listKey ,JSON.stringify( scheduler)) ;
+        //await redisClient.rPush(listKey ,JSON.stringify( scheduler)) ;
+
+        //ioredis
+        await redis.rpush(listKey ,JSON.stringify( scheduler)) ;
         
         res.status(201).json(ret) ;
     } catch (error) {
@@ -80,7 +86,10 @@ const Delete = async (req , res) => {
 
         const listKey = ret.dayOftheWeek +'-'+ret.timeOftheDay ;
 
-        await redisClient.lRem(listKey , 1 , JSON.stringify(redisElement)) ;
+        //await redisClient.lRem(listKey , 1 , JSON.stringify(redisElement)) ;
+
+        //ioredis
+        await redis.lrush(listKey ,JSON.stringify( scheduler)) ;
 
         res.status(200).json(ret) ;
     } catch (error) {
