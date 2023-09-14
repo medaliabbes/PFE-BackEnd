@@ -58,7 +58,7 @@ app.use('/api/v1/devices'     , authentication.authenticateUser , deviceAuthoriz
 
 app.use('/api/v1/alerts'      , authentication.authenticateUser , alertAuthorizationModule.alertAuthorization , alertAuthorizationModule.alertPostAuthorization,  AlertRouter) ;
 
-app.use('api/v1/devicelog'    , authentication.authenticateUser , );
+app.use('/api/v1/devicelog'    , authentication.authenticateUser , DeviceLogRouter );
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;

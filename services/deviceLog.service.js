@@ -19,7 +19,26 @@ async function GetDeviceLog(deviceId){
     return await deviceLogModel.find({ deviceid: deviceId});
 }
 
+async function DeleteLog(){
+    return await deviceLogModel.deleteMany({});
+}
 
-module.exports = {Create , Read , ReadAll ,GetDeviceLog } ;
+async function GetDeviceLogByDate(deviceid , start , end ){
+
+    if(start && end )
+    {
+        let ret = await deviceLogModel.find({deviceid : deviceid , timestamp :
+                { $gte: start, $lte: end}}) ;
+        return ret ;
+    }
+    else if(start)
+    {
+        return 
+    }
+
+    else return null ;
+}
+
+module.exports = {Create , Read , ReadAll ,GetDeviceLog ,DeleteLog ,GetDeviceLogByDate} ;
 
 
