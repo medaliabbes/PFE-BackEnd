@@ -2,7 +2,7 @@
 
 const alertService  = require('./../services/alert.service') ;
 //const redis         = require('redis');
-
+const deviceService = require('./../services/device.service');
 
 const Redis = require("ioredis");
 const redis = new Redis();
@@ -15,6 +15,11 @@ async function redisConnect()
     await redisClient.connect();
 }
 
+
+/**
+ * Note : Alerts are put in a list and the redis key for the list is the device TTNid
+ *  or device eui
+ */
 
 //redisConnect() ;
 
@@ -31,10 +36,19 @@ const Create = async(req , res) => {
         
         alert.userid = req.user.id ;
 
+
+        const deviceTTNid = await deviceService.GetDeviceTTNid(alert.deviceid) ; 
+
+        alert.deviceTTNid = deviceTTNid ;
+//
+
         const ret = await alertService.Create(alert) ;
-        
+
+        console.log('alert create ttnid :' , deviceTTNid);
+
+        console.log(alert) ;
         //ioredis
-        await redis.rpush(alert.deviceid , JSON.stringify(alert));
+        await redis.rpush(deviceTTNid , JSON.stringify(alert));
 
         //await redisClient.rPush(alert.deviceid , JSON.stringify(alert));
         
@@ -70,12 +84,17 @@ const Delete = async(req , res )=>{
     try{
         const id = req.params.id ; 
 
-        const ret = await alertService.Delete(id) ;
+        
 
-        const redisElement = { deviceid : ret.deviceid.toString()  , 
+        const ret = await alertService.Delete(id) ;
+   
+        //const deviceTTNid = await deviceService.GetDeviceTTNid(ret.deviceid) ; 
+
+        const redisElement = { deviceid :  ret.deviceid.toString()  , 
                                sensor   : ret.sensor    ,
                                threshold: ret.threshold , 
-                               userid   : ret.userid.toString() 
+                               userid   : ret.userid.toString() ,
+                               deviceTTNid : ret.deviceTTNid ,
                              } ;
                             
         console.log(redisElement) ;
@@ -83,7 +102,7 @@ const Delete = async(req , res )=>{
         console.log(JSON.stringify(redisElement)) ;
         
         //ioredis
-        await redis.lrem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
+        await redis.lrem(ret.deviceTTNid, 1 , JSON.stringify(redisElement));
         //await redisClient.lRem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
         
         res.status(200).json(ret) ;
@@ -99,16 +118,15 @@ const Read = async(req, res) =>{
     try{
         const id = req.params.id ; 
 
-        const alert = await alertService.Read(id) ;
+        //const alert = await alertService.Read(id) ;
+
+        //ioredis 123456789abbdeff
+        let alert = await redis.lrange( "eui-"+id, 0, -1);
+        console.log(alert) ;
         
-        //let alert = await redisClient.get('64d7dc22ed015d061f656f95') ;
         //alert = JSON.parse(alert) ;
 
-        //ioredis
-        //let alert = await redis.lrange('64d7dc22ed015d061f656f95' , 0, -1);
-        //alert = JSON.parse(alert) ;
-
-        res.status(200).json(alert) ;
+        res.status(200).json({alert :alert}) ;
     }catch(error)
     {
         console.error(error) ;

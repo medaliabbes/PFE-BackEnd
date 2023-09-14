@@ -40,5 +40,14 @@ async function GetUserListOfDevices(userid)
     return await deviceModel.find({ ownerid : userid}) ;
 }
 
-module.exports = { Create , Update , Delete , Read ,
+async function GetDeviceByTTNid(deviceTTNid)
+{
+    return await deviceModel.findOne({ttnid : deviceTTNid});
+}
+
+async function GetDeviceTTNid(id){
+    const device = await deviceModel.findById(id);
+    return device.ttnid ; 
+}
+module.exports = { Create , Update , Delete , Read , GetDeviceByTTNid , GetDeviceTTNid ,
                    GetAlertList , GetSchedulerList , GetUserListOfDevices} ;

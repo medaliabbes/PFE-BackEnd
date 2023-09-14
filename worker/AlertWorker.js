@@ -9,8 +9,24 @@
 const { workerData, 
         parentPort, 
         isMainThread }  
-                = require("worker_threads");
-const mqtt      = require('mqtt') ;
+                       = require("worker_threads");
+const mqtt             = require('mqtt')   ;
+const Redis            = require("ioredis");
+const mongoose         = require("mongoose") ;
+const DeviceLogService = require('./../services/deviceLog.service') ;
+const DeviceService    = require('./../services/device.service');
+
+//configure mongoose
+mongoose.connect(
+    process.env.MONGODB_URI ,
+    {
+      useNewUrlParser    : true     ,
+      useUnifiedTopology : true     ,
+    }
+  );
+
+const redis = new Redis();
+
 //const LoRaMessageFormatter = require('./utilities/loramessageformater') ;
 
 console.log(workerData ) ;
@@ -41,7 +57,7 @@ MqttClient.on('connect' , (error) => {
     MqttClient.subscribe("/"+ApplicationId) ;
 });
 
-MqttClient.on('message' , (topic, message) => {
+MqttClient.on('message' ,async (topic, message) => {
     
     console.log("topic :" , topic) ;
 
@@ -49,9 +65,45 @@ MqttClient.on('message' , (topic, message) => {
 
     try{
 
-        console.log("dev eui :" , message.end_device_ids.dev_eui) ;
+        const deviceEUI = message.end_device_ids.dev_eui ;
+
+        console.log("dev eui :" , deviceEUI) ;
 
         console.log("dev payload :" , message.uplink_message.frm_payload) ;
+
+        //format Payload and inserted into database 
+
+        const device = await DeviceService.GetDeviceByTTNid(deviceEUI);
+
+        //console.log("device:" ,device) ;
+
+        const log = { deviceid  : device._id.toString() , sensor : "temperature" , value : 20 };
+
+        console.log("device log :" , log);
+
+        const dblog = await DeviceLogService.Create(log) ;
+
+        console.log("db log :" , dblog);
+
+        //this will return a list of alerts
+        let alerts = await RedisGetDeviceAlerts(deviceEUI) ;
+
+        console.log("alerts : " , alerts.length ) ;
+
+        for(let i = 0 ;i<alerts.length ; i++)
+        {
+            let alert = JSON.parse(alerts[i]) ;
+            
+            //console.log("alert : " , alert ) ;
+
+            /**
+             * Here you should do the comparison between the recieved value and the alert
+             * value and notify the user if the threshold is passed 
+             */
+
+        }
+        
+
 
         /**
           {
@@ -74,6 +126,14 @@ MqttClient.on('message' , (topic, message) => {
     }
 
 });
+
+
+
+async function RedisGetDeviceAlerts(DevEUI)
+{
+    return await redis.lrange(DevEUI , 0 , -1) ;
+}
+
 
 /*
 setInterval(()=>{

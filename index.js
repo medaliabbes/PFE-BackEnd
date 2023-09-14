@@ -11,6 +11,7 @@ const DeviceRouter                = require('./routers/device.router') ;
 const SchedulerRouter             = require('./routers/scheduler.router') ;
 const ZoneRouter                  = require('./routers/zone.router') ;
 const AlertRouter                 = require('./routers/alert.router') ;
+const DeviceLogRouter             = require('./routers/devicelog.router') ;
 const UserCommandRouter           = require('./routers/usercommand.router') ;
 const authentication              = require('./middlewares/authentication.middleware') ;
 const deviceAuthorizationModule   = require('./middlewares/deviceAuthorization.middleware') ;
@@ -56,6 +57,8 @@ app.use('/api/v1/usercommand' , authentication.authenticateUser , userCommandAut
 app.use('/api/v1/devices'     , authentication.authenticateUser , deviceAuthorizationModule.deviceAuthorization, deviceAuthorizationModule.devicePostAuthorization ,DeviceRouter) ;
 
 app.use('/api/v1/alerts'      , authentication.authenticateUser , alertAuthorizationModule.alertAuthorization , alertAuthorizationModule.alertPostAuthorization,  AlertRouter) ;
+
+app.use('api/v1/devicelog'    , authentication.authenticateUser , );
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;
