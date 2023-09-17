@@ -10,4 +10,6 @@ router.post('/:id' ,DeviceLogController.GetDeviceLogByDate ) ;
 
 router.delete('/all'  , DeviceLogController.DeleteAll) ;
 
+//can add select by number of sample (ex : last n samples )
+
 module.exports = router ;

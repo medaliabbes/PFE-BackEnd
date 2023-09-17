@@ -29,6 +29,8 @@ const Create = async (req , res) => {
 
         const listKey = scheduler.dayOftheWeek +'-'+scheduler.timeOftheDay ;
 
+        console.log("redis scheduler key " , listKey) ;
+
         //a list can hold multiple scheduler of different devices and zones but have 
         //the same start time 
         //await redisClient.rPush(listKey ,JSON.stringify( scheduler)) ;

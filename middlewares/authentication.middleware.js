@@ -48,7 +48,7 @@ const login = async (req , res , next) => {
             //user exist ==> generate a jwt and return it to frontend 
             let token = jwt.sign({id : user._id , iam : user.permissionLevel , 
                                   addby : user.addby} , 
-                        process.env.JWT_SECRET , {expiresIn: 2400 }) ;
+                        process.env.JWT_SECRET , {expiresIn: 60*60*24 }) ;
             res.status(200).json({message : "success" , accessToken : token}) ;
         }
         else{

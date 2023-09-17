@@ -23,6 +23,12 @@ sender.on('command-device' ,(options)=>{
         password : options.appkey 
     }
 
+    //testing purpose
+    {
+        let topic = 'v3/'+options.appid+'@ttn/devices/eui-'+options.eui+'/down/push' ;
+        console.log("MQTT Sender topic :" , topic) ;
+    }
+
     const brokerUrl  = process.env.MQTT_BROKER_URL ;
     
     const mqttClient = mqtt.connect(brokerUrl, mqttClientOptions); 
@@ -41,6 +47,8 @@ sender.on('command-device' ,(options)=>{
         
         const topic = 'v3/'+options.appid+'@ttn/devices/eui-'+options.eui+'/down/push' ;
         
+        //console.log("MQTT Sender : " , topic) ;
+
         mqttClient.publish(topic , payload) ;
 
         mqttClient.end() ;

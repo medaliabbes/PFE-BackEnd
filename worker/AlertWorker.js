@@ -99,6 +99,7 @@ MqttClient.on('message' ,async (topic, message) => {
             /**
              * Here you should do the comparison between the recieved value and the alert
              * value and notify the user if the threshold is passed 
+             * Firebase code can be added here
              */
 
         }
