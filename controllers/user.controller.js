@@ -81,8 +81,21 @@ const Delete = async (req , res) => {
 const Read   = async (req , res) => {
     try{
         const userID = req.params.id ;
+
         let ret = await UserService.Read(userID) ;
-        res.status(200).json(ret) ;
+
+        const permission  = new permissionmodule.permission(ret.permissionLevel);
+
+        const userpermssion = permission.GetPermissionObject() ;
+
+        ret.permissionLevel = userpermssion ;
+
+        let user = {_id : ret._id ,
+                    name : ret.name , 
+                    email : ret.email ,
+                    permission : userpermssion} ;
+
+        res.status(200).json(user) ;
     }catch(e)
     {
        res.status(500).json({error : e}) ; 

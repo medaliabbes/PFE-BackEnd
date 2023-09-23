@@ -7,8 +7,8 @@
 const mqtt             =  require('mqtt')    ;
 const Redis            =  require("ioredis") ;
 const mongoose         =  require("mongoose");
-const DeviceService    = require('./../services/device.service');
-const MQTTSender       = require('../utilities/mqtt.sender') ;
+const DeviceService    =  require('./../services/device.service');
+const MQTTSender       =  require('../utilities/mqtt.sender') ;
 const redis = new Redis();
 
 //configure mongoose
@@ -20,6 +20,12 @@ mongoose.connect(
     }
   );
 
+
+/***
+ * 
+ * add another function to turn of devices 
+ * it can be periodic 
+ */
 
 //Call this function every 1 minute
 setInterval(  CheckScheduler , 1000 *60 ) ;
@@ -98,5 +104,8 @@ async function SendCommandToDevice(deviceid , command)
 
 async function SendCommandToZone(zoneid)
 {
-
+    /**
+     * this function should get the list of devices of and send
+     * command to the device one by one 
+     */
 }
