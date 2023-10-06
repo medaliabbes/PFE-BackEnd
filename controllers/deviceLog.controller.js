@@ -60,4 +60,17 @@ const GetDeviceLogByDate = async(req , res) =>{
     }
 }
 
-module.exports = {ReadAll , GetDeviceLog , DeleteAll ,GetDeviceLogByDate} ;
+const GetDeviceLogCount = async(req , res) => {
+    try{
+        const count = req.params.count ;
+        const deviceid = req.params.id ;
+        const ret = await DeviceLogService.GetDeviceLogByCount(deviceid , count) ;
+        console.log(`device id : ${deviceid} count ${count}`) ; 
+        res.status(200).json(ret) ;
+    }catch(e){
+        console.log(e) ;
+        res.status(500).json(e) ;
+    }
+}
+
+module.exports = {ReadAll , GetDeviceLog , DeleteAll,GetDeviceLogCount ,GetDeviceLogByDate} ;

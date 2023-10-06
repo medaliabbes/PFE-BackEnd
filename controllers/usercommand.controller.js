@@ -45,6 +45,15 @@ client.on('message', (topic, message) => {
 }) ;
 
 
+
+/**
+ * 
+ * Create request body :
+ *      {
+        "deviceid": "64f3f256e88ad20e5f2ffef1",
+        "command": "on"
+        }
+ */
 const Create = async (req , res) => {
     try{
         const command = req.body ;

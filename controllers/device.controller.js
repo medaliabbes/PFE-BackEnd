@@ -48,7 +48,14 @@ const Create = async(req , res) =>
 const Update = async(req , res) =>
 {
     try{
-        
+        let data = req.body;
+
+        console.log("device id :" , req.params.id) ;
+        console.log(data) ;
+
+        let ret = await deviceService.Update(req.params.id, data) ;        
+
+        res.status(200).json(ret) ;
     }catch(error)
     {
         console.log(error) ;

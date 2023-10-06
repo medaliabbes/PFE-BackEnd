@@ -6,7 +6,9 @@ const User = mongoose.Schema({
     //a user can add another user by, and auth0 will do the rest
     addby      : { type : mongoose.Schema.Types.ObjectId ,ref : 'user' },
     email      : { type : String ,required : true  } ,
-    name       : String ,
+    firstname       : String ,
+
+    lastname : String ,
     profilepic : String ,
     password   : String ,
     permissionLevel : { type : Number , default : 0 } //permission module generate this number

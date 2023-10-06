@@ -19,6 +19,12 @@ async function redisConnect()
  * ADD Scheduler to Redis and database
  * 
  * All controller should be protected againest unauthorized access 
+ * Create request body{
+    "dayOftheWeek": "Sun",
+    "timeOftheDay": "8:54",
+    "Duration": "00:23",
+    "device": "64f3ed07e88ad20e5f2ffed2"
+    }
  */
 const Create = async (req , res) => {
 
@@ -45,13 +51,40 @@ const Create = async (req , res) => {
     }
 }
 
+
 const Update = async (req , res) => {
 
     try {
         const id        = req.params.id ;
         const scheduler = req.body      ;
-        const ret       = await SchedulerService.Update(id ,scheduler) ;
-        res.status(200).json(ret) ;
+
+        let ret     = await SchedulerService.Read(id) ;
+
+        let redisElement = SchedulerModelToRedisFormat(ret) ;
+
+        let listKey = ret.dayOftheWeek + '-' + ret.timeOftheDay ; 
+
+        console.log(redisElement) ;
+        //remove old scheduler 
+        const resp = await redis.lrem(listKey , 0 ,redisElement) ;
+
+        console.log(resp) ;
+        
+        ret         = await SchedulerService.Update(id ,scheduler) ;
+
+        ret = await SchedulerService.Read(id) ;
+
+        redisElement = SchedulerModelToRedisFormat(ret) ;
+
+        listKey = ret.dayOftheWeek + '-' + ret.timeOftheDay ;
+
+        //insert the new scheduler 
+        await redis.rpush(listKey  , redisElement );
+
+        
+        
+        res.status(200).json({message : "update"}) ;
+
     } catch (error) {
         console.error(error) ;
         res.status(500).json({error : error}) ;
@@ -71,27 +104,18 @@ const Delete = async (req , res) => {
 
         let ret  = await SchedulerService.Delete(id) ;
 
-        let redisElement = new Object();
+        /***************************************************** */
+        let redisElement = SchedulerModelToRedisFormat(ret)
 
-        redisElement.dayOftheWeek = ret.dayOftheWeek ;
-        redisElement.timeOftheDay = ret.timeOftheDay ;
-        redisElement.Duration     = ret.Duration     ;
-        if(ret.zone != undefined)
-        {
-            redisElement.zone = ret.zone.toString() ;
-        }
-        else{
-            redisElement.device = ret.device.toString() ;
-        }
-
-        console.log(redisElement) ;
+        /************************************************************/
 
         const listKey = ret.dayOftheWeek +'-'+ret.timeOftheDay ;
-
-        //await redisClient.lRem(listKey , 1 , JSON.stringify(redisElement)) ;
-
+        
         //ioredis
-        await redis.lrush(listKey ,JSON.stringify( scheduler)) ;
+        await redis.lrem(listKey ,0, redisElement ) ;
+        //let redisresp = await redis.lrange(listKey , 0 ,-1) ;
+
+        //console.log(redisresp) ;
 
         res.status(200).json(ret) ;
     } catch (error) {
@@ -146,6 +170,24 @@ const ReadAll  = async(req,res) =>{
         console.log(e) ;
         res.status(500).json(e) ; 
     }
+}
+
+function SchedulerModelToRedisFormat(Scheduler)
+{
+    let redisElement = new Object();
+
+    redisElement.dayOftheWeek = Scheduler.dayOftheWeek ;
+    redisElement.timeOftheDay = Scheduler.timeOftheDay ;
+    redisElement.Duration     = Scheduler.Duration     ;
+    if(Scheduler.zone != undefined)
+    {
+        redisElement.zone = Scheduler.zone.toString() ;
+    }
+    else{
+        redisElement.device = Scheduler.device.toString() ;
+    }
+
+    return JSON.stringify(redisElement) ;
 }
 
 module.exports = { Create , Update , Delete , Read ,

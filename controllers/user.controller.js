@@ -4,12 +4,39 @@ const UserService = require('./../services/user.service') ;
 const permissionmodule  =  require('./../middlewares/permission.middleware') ;
 
 /**
- * to add user 
+ * create user request body
  * {
-    "email" : "test2@gmail.com",
-    "name"  : "test2" ,
-    "password" : "dali1997" ,
-    "permissionLevel" : 16777215
+    "firstname": "user2",
+    "lastname": "muser2",
+    "phonenumber" : "+21600000000" ,
+    "email": "user2.muser@gmail.com",
+    "password" : "rtyu1254PO#" ,
+    "permissionlevel": {
+        "zones" : {
+            "Read" : 0 ,
+            "Write": 0
+        },
+        "users" : {
+            "Read" : 1 ,
+            "Write": 0
+        },
+        "alerts" : {
+            "Read" : 1 ,
+            "Write": 1
+        },
+        "schedulers" : {
+            "Read" : 1 ,
+            "Write": 0
+        },
+        "devices" : {
+            "Read" : 1 ,
+            "Write": 0
+        },
+        "userCommands" :{
+            "Read" : 1 ,
+            "Write": 0
+        }
+    }
 }
  */
 /**
@@ -90,12 +117,16 @@ const Read   = async (req , res) => {
 
         ret.permissionLevel = userpermssion ;
 
-        let user = {_id : ret._id ,
-                    name : ret.name , 
-                    email : ret.email ,
-                    permission : userpermssion} ;
+        let user = {
+                    _id : ret._id ,
+                    firstname  : ret.firstname , 
+                    lastname   : ret.lastname  ,
+                    email      : ret.email ,
+                    permission : userpermssion
+                } ;
 
         res.status(200).json(user) ;
+        //res.status(200).json(ret) ;
     }catch(e)
     {
        res.status(500).json({error : e}) ; 
@@ -105,7 +136,9 @@ const Read   = async (req , res) => {
 const ReadAll = async (req , res) =>{
     try{
         const users = await UserService.ReadAll() ;
+
         res.status(200).json(users) ;
+ 
     }catch(e)
     {
         res.status(500).json({error : e}) ;
@@ -115,8 +148,34 @@ const ReadAll = async (req , res) =>{
 const GetUserAddedBy = async (req , res) => {
 
     try{
+        console.log("GetUserAddedby");
         const users = await UserService.GetAddById(req.user.id) ;
-        res.status(200).json(users) ;
+        
+        const permission  = new permissionmodule.permission();
+
+        let listOfUsers = [] ;
+
+        users.forEach((user) => {
+            
+            permission.setPermissionCode(user.permissionLevel) ;
+
+            const userpermssion = permission.GetPermissionObject() ;
+
+            //ret.permissionLevel = userpermssion ;
+            //console.log(user) ;
+            let myuser = {_id : user._id ,
+                        //name  : user.name , 
+                        firstname  : user.firstname , 
+                        lastname   : user.lastname  ,
+                        email : user.email ,
+                        permission : userpermssion} ;
+            //console.log("myuser :" , myuser) ;
+            listOfUsers.push(myuser) ;
+        });
+        //console.log(listOfUsers) ;
+        res.status(200).json(listOfUsers) ;
+
+        //res.status(200).json(users) ;
     }catch(e)
     {
         console.log(e) ;
