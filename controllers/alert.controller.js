@@ -36,23 +36,18 @@ const Create = async(req , res) => {
         
         alert.userid = req.user.id ;
 
-
         const deviceTTNid = await deviceService.GetDeviceTTNid(alert.deviceid) ; 
 
         alert.deviceTTNid = deviceTTNid ;
-//
 
         const ret = await alertService.Create(alert) ;
 
-        console.log('alert create ttnid :' , deviceTTNid);
-
-        console.log(alert) ;
+        let redisElement = AlertModelToRedisElement(ret) ;
         //ioredis
-        await redis.rpush(deviceTTNid , JSON.stringify(alert));
+        await redis.rpush(deviceTTNid , redisElement );
 
-        //await redisClient.rPush(alert.deviceid , JSON.stringify(alert));
-        
         res.status(201).json(ret) ;
+
     }catch(error)
     {
         console.error(error) ;
@@ -63,10 +58,25 @@ const Create = async(req , res) => {
 const Update = async(req , res) => {
     try{
         const id = req.params.id ; 
+
         const alert = req.body ;
 
-        const ret = await alertService.Update(id , alert) ;
+        let ret = await alertService.Update(id , alert) ;
+
+        let redisElement = AlertModelToRedisElement(ret) ; 
+
+        await redis.lrem(ret.deviceTTNid, 1 , redisElement);
+
+        ret = await alertService.Read(id) ;
+
+        redisElement = AlertModelToRedisElement(ret) ; 
+
+        await redis.rpush(ret.deviceTTNid , redisElement );
+        
+        ret = await alertService.Read(id) ;
+
         res.status(200).json(ret) ;
+
     }catch(error)
     {
         console.error(error) ;
@@ -84,8 +94,6 @@ const Delete = async(req , res )=>{
     try{
         const id = req.params.id ; 
 
-        
-
         const ret = await alertService.Delete(id) ;
    
         //const deviceTTNid = await deviceService.GetDeviceTTNid(ret.deviceid) ; 
@@ -99,12 +107,13 @@ const Delete = async(req , res )=>{
                             
         console.log(redisElement) ;
         
+
+
         console.log(JSON.stringify(redisElement)) ;
         
         //ioredis
         await redis.lrem(ret.deviceTTNid, 1 , JSON.stringify(redisElement));
-        //await redisClient.lRem(ret.deviceid.toString(), 1 , JSON.stringify(redisElement));
-        
+
         res.status(200).json(ret) ;
 
     }catch(error)
@@ -118,15 +127,10 @@ const Read = async(req, res) =>{
     try{
         const id = req.params.id ; 
 
-        //const alert = await alertService.Read(id) ;
+        const alert = await alertService.Read(id) ;
 
-        //ioredis 123456789abbdeff
-        let alert = await redis.lrange( "eui-"+id, 0, -1);
-        console.log(alert) ;
-        
-        //alert = JSON.parse(alert) ;
+        res.status(200).json(alert) ;
 
-        res.status(200).json({alert :alert}) ;
     }catch(error)
     {
         console.error(error) ;
@@ -162,5 +166,20 @@ const ReadAll = async (req , res) =>{
         res.status(500).json( {error : error}) ;
     }
 }
+
+function AlertModelToRedisElement(alert)
+{
+    let redisElement = { deviceid :  alert.deviceid.toString()  , 
+        sensor      : alert.sensor    ,
+        threshold   : alert.threshold , 
+        userid      : alert.userid.toString() ,
+        deviceTTNid : alert.deviceTTNid ,
+      } ;
+    
+    redisElement = JSON.stringify(redisElement) ;
+
+    return redisElement ;
+}
+
 
 module.exports = { Create , Update , Delete , Read , GetDeviceAlert ,ReadAll} ;

@@ -43,6 +43,13 @@ app.use('/api/v1/auth' , authentication.authenticateUser , authentication.testMi
 
 app.use('/api/v1/registre' , authentication.registre) ;
 
+
+/**
+ * login request body {
+    "email" : "test3@gmail.com",
+    "password":"dali1997"
+}
+ */
 //this route return JWT in case the user existe 
 app.use('/api/v1/login'       , authentication.login)  ;
 
@@ -50,7 +57,7 @@ app.use('/api/v1/users'       , authentication.authenticateUser ,userAuthorizati
 
 app.use('/api/v1/zones'       , authentication.authenticateUser ,zoneAuthorizationModule.zoneAuthorization, zoneAuthorizationModule.zonePostAuthorization , ZoneRouter) ;
 
-app.use('/api/v1/scheduler'   , authentication.authenticateUser , schedulerAuthorizatinModule.schedulerAuthorization , schedulerAuthorizatinModule.schedulerPostAuthorization , SchedulerRouter) ;
+app.use('/api/v1/schedulers'   , authentication.authenticateUser , schedulerAuthorizatinModule.schedulerAuthorization , schedulerAuthorizatinModule.schedulerPostAuthorization , SchedulerRouter) ;
  
 app.use('/api/v1/usercommand' , authentication.authenticateUser , userCommandAuthorizationModule.commandAuthorization , userCommandAuthorizationModule.commandPostAuthorization ,UserCommandRouter);
 
@@ -65,7 +72,7 @@ app.get('/endpoint' , function(req , res) {
   res.status(200).json({message :"serverWorking"}) ;
 });
 
-app.listen(process.env.APP_PORT , ()=>{
+app.listen( process.env.APP_PORT/* ,"192.168.1.13"*/ ,"0.0.0.0", ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;
 }) ;
 

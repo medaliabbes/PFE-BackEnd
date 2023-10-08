@@ -9,7 +9,7 @@ const Redis            =  require("ioredis") ;
 const mongoose         =  require("mongoose");
 const DeviceService    =  require('./../services/device.service');
 const MQTTSender       =  require('../utilities/mqtt.sender') ;
-const redis = new Redis();
+const redis            =  new Redis();
 
 //configure mongoose
 mongoose.connect(
@@ -30,12 +30,7 @@ mongoose.connect(
 //Call this function every 1 minute
 setInterval(  CheckScheduler , 1000 *60 ) ;
 
-
-
-
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] ;
-
-
 
 async function CheckScheduler()
 {
@@ -47,14 +42,32 @@ async function CheckScheduler()
 
     let SchedulerList = await  RedisGetListOfScheduler(redisKey) ;
 
-    
     for(let i = 0 ;i<SchedulerList.length ; i++)
     {
         
         if(SchedulerList[i].device)
         {
             //console.log(SchedulerList[i]) ;
+            //send on command to the device 
             await SendCommandToDevice(SchedulerList[i].device ,"on") ;
+
+            //calculate the off time 
+            let hm = SchedulerList[i].Duration.split(':') ;
+
+            let date = new Date() ;
+
+            let offTime = new Date(date.getTime() + ( parseInt(hm[0]) * 60 
+
+            + parseInt(hm[1])) * 60000) ;
+
+            console.log(offTime) ;
+
+            const deviceTimeOff = "off-" +days[offTime.getDay()] + '-' 
+                        + offTime.getHours() + ':' + offTime.getMinutes() ;
+
+            console.log("TimeOff :" ,deviceTimeOff) ;
+            //add the device to redis to later turn it off  
+            await redis.rpush(deviceTimeOff ,JSON.stringify( SchedulerList[i]) ) ;
         }
         else if(SchedulerList[i].zone)
         {
@@ -65,11 +78,15 @@ async function CheckScheduler()
         }
     }
 
-    /**
-     * '{"dayOftheWeek":"Sun","timeOftheDay":"8:7",
-     * "Duration":"00:40","device":"64d7dc22ed015d061f656f95"}'
-     */
-    //console.log(redisData) ;
+    console.log('check sch :', "off-" + redisKey) ;
+    //check the devices that need to be turned off 
+    let OffSchedulers = await  RedisGetListOfScheduler("off-" + redisKey) ;
+
+    for(let i = 0 ; i < OffSchedulers.length ; i++)
+    {
+        console.log("off : " , OffSchedulers[i].device) ;
+        await SendCommandToDevice(OffSchedulers[i].device , "off") ;
+    }
 
 }
 
@@ -91,6 +108,7 @@ async function SendCommandToDevice(deviceid , command)
     const device = await DeviceService.Read(deviceid) ;
    
     if(device){
+        console.log("MQTT send") ;
         MQTTSender.emit('command-device' , {
             appid  : device.appid  , 
             appkey : device.appkey , 
@@ -101,6 +119,12 @@ async function SendCommandToDevice(deviceid , command)
         
     }
 }
+
+
+
+
+
+
 
 async function SendCommandToZone(zoneid)
 {
