@@ -22,6 +22,13 @@ const userCommandAuthorizationModule = require('./middlewares/userCommandAuthori
 const alertAuthorizationModule    = require('./middlewares/alertAuthorization.middleware') ;
 const {Worker,isMainThread,parentPort ,workerData} = require("worker_threads");
 
+const http      = require('http').createServer(app);
+var   socketio  = require('socket.io') (http, {
+  cors: {
+      origins: ['http://localhost:4200']
+  }
+});
+
 //configure mongoose
 mongoose.connect(
     process.env.MONGODB_URI ,
@@ -72,22 +79,27 @@ app.get('/endpoint' , function(req , res) {
   res.status(200).json({message :"serverWorking"}) ;
 });
 
-app.listen( process.env.APP_PORT/* ,"192.168.1.13"*/ ,"0.0.0.0", ()=>{
+socketio.listen(9000) ;
+
+socketio.on('connection' , (socket) => {
+  console.log("new connection socket id : ",socket.id) ;
+  socket.emit('connection', 'data from server!');
+}) ; 
+
+
+app.listen( process.env.APP_PORT/* ,'192.168.1.13'*/,"0.0.0.0", ()=>{
     console.log("Server Running on port :" , process.env.APP_PORT) ;
 }) ;
+
+
+//var socketio    =   socket(expressServer) ;
+
 
 
 
 /**
  * Angular tuto can be found in : /desktop/angular/recap-tuto
  */
-
-/*
-setInterval(function(){
-  //run the background task 
-} , 1000 * 60) ;
-*/
-
 if (isMainThread) {
 
   const AlertWorkerLauncher = new Worker("./worker/AlertWorkerLauncher.js");

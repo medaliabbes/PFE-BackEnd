@@ -3,6 +3,7 @@ const userService = require("../services/user.service") ;
 const bcrypt      = require('bcrypt');
 const jwt         = require('jsonwebtoken') ;
 
+
 //Unothorized error code 401 
 
 /**
@@ -46,10 +47,18 @@ const login = async (req , res , next) => {
         if(bcrypt.compareSync(password , user.password))
         {
             //user exist ==> generate a jwt and return it to frontend 
-            let token = jwt.sign({id : user._id , iam : user.permissionLevel , 
+       let token = jwt.sign({id : user._id , iam : user.permissionLevel , 
                                   addby : user.addby} , 
                         process.env.JWT_SECRET , {expiresIn: 60*60*24 }) ;
-            res.status(200).json({message : "success" , accessToken : token}) ;
+                        
+       
+       console.log(user);
+       console.log(user.name)
+       console.log(user.firstname );
+       
+				       
+    console.log({message : "success" , accessToken : token ,username : user.firstname});
+    res.status(200).json({message : "success" , accessToken : token ,username : 	   user.firstname}) ;
         }
         else{
             

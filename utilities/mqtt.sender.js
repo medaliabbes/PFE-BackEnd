@@ -1,4 +1,5 @@
 
+
 /**
  * this task can be done by a node js worker ,in case the event emitter cause 
  * scalability problem 
@@ -66,9 +67,11 @@ sender.on('command-device' ,(options)=>{
 
 module.exports = sender ;
 
+
 /*
 //exemple data transformer
 //processing class 
+
 let Formater = new processingModule() ;
 
 let m = new lmFormatter() ; 
@@ -97,4 +100,5 @@ const payload = '{"downlinks":[{"f_port": 2,"frm_payload":"'+ strBase64//packetS
                 +'","priority": "NORMAL"}]}'
 client.publish('v3/app-avempace@ttn/devices/eui-'+device.eui+'/down/push' ,
     payload) ;
-    */
+
+*/

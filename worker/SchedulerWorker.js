@@ -60,7 +60,7 @@ async function CheckScheduler()
 
             + parseInt(hm[1])) * 60000) ;
 
-            console.log(offTime) ;
+            //console.log(offTime) ;
 
             const deviceTimeOff = "off-" +days[offTime.getDay()] + '-' 
                         + offTime.getHours() + ':' + offTime.getMinutes() ;
@@ -84,8 +84,11 @@ async function CheckScheduler()
 
     for(let i = 0 ; i < OffSchedulers.length ; i++)
     {
-        console.log("off : " , OffSchedulers[i].device) ;
-        await SendCommandToDevice(OffSchedulers[i].device , "off") ;
+        console.log("Turn Off : " , OffSchedulers[i].device) ;
+        
+        await SendCommandToDevice(OffSchedulers[i].device , "Off") ;
+
+                       
     }
 
 }

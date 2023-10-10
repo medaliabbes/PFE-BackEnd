@@ -8,7 +8,7 @@ const User = mongoose.Schema({
     email      : { type : String ,required : true  } ,
     firstname       : String ,
 
-    lastname : String ,
+    lastname   : String ,
     profilepic : String ,
     password   : String ,
     permissionLevel : { type : Number , default : 0 } //permission module generate this number
