@@ -97,6 +97,7 @@ console.log("SchedulerList[i] :" ,SchedulerList[i] );
 
 async function RedisGetListOfScheduler(key)
 {
+try{
     let ListOfScheduler = await  redis.lrange(key , 0 , -1) ;
 
     for(let i = 0 ;i<ListOfScheduler.length ;i++)
@@ -105,11 +106,19 @@ async function RedisGetListOfScheduler(key)
     }
 
     return ListOfScheduler ;
+    }
+    
+    catch(e)
+    {
+    	console.log(e) ;
+    	return [] ;
+    }
 }
 
 
 async function SendCommandToDevice(deviceid , command)
 {
+try{
     const device = await DeviceService.Read(deviceid) ;
     
     const zone = await ZoneService.Read(device.zoneid) ;
@@ -124,6 +133,10 @@ async function SendCommandToDevice(deviceid , command)
         }) ;
     }else{
         
+    }
+    }catch(e)
+    {
+    	console.log(e);
     }
 }
 
