@@ -9,6 +9,7 @@ const Redis            =  require("ioredis") ;
 const mongoose         =  require("mongoose");
 const DeviceService    =  require('./../services/device.service');
 const MQTTSender       =  require('../utilities/mqtt.sender') ;
+const ZoneService      =  require('./../services/zone.service');
 const redis            =  new Redis();
 
 //configure mongoose
@@ -51,14 +52,15 @@ async function CheckScheduler()
             //send on command to the device 
             await SendCommandToDevice(SchedulerList[i].device ,"on") ;
 
+console.log("SchedulerList[i] :" ,SchedulerList[i] );
             //calculate the off time 
-            let hm = SchedulerList[i].Duration.split(':') ;
+            let hm = SchedulerList[i].Duration;//.split(':') ;
 
             let date = new Date() ;
 
-            let offTime = new Date(date.getTime() + ( parseInt(hm[0]) * 60 
+            let offTime = new Date(date.getTime() + ( parseInt(hm) * 60 )) ;
 
-            + parseInt(hm[1])) * 60000) ;
+            //+ parseInt(hm[1])) * 60000) ;
 
             //console.log(offTime) ;
 
@@ -86,7 +88,7 @@ async function CheckScheduler()
     {
         console.log("Turn Off : " , OffSchedulers[i].device) ;
         
-        await SendCommandToDevice(OffSchedulers[i].device , "Off") ;
+        await SendCommandToDevice(OffSchedulers[i].device , "off") ;
 
                        
     }
@@ -109,12 +111,14 @@ async function RedisGetListOfScheduler(key)
 async function SendCommandToDevice(deviceid , command)
 {
     const device = await DeviceService.Read(deviceid) ;
+    
+    const zone = await ZoneService.Read(device.zoneid) ;
    
     if(device){
         console.log("MQTT send") ;
         MQTTSender.emit('command-device' , {
             appid  : device.appid  , 
-            appkey : device.appkey , 
+            appkey : zone.apikey , 
             data   : command       , 
             eui    : device.eui 
         }) ;

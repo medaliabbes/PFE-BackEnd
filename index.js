@@ -22,6 +22,7 @@ const userCommandAuthorizationModule = require('./middlewares/userCommandAuthori
 const alertAuthorizationModule    = require('./middlewares/alertAuthorization.middleware') ;
 const {Worker,isMainThread,parentPort ,workerData} = require("worker_threads");
 
+
 const http      = require('http').createServer(app);
 var   socketio  = require('socket.io') (http, {
   cors: {

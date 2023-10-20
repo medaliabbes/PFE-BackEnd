@@ -106,9 +106,11 @@ const Delete = async (req , res) => {
         const id = req.params.id ;
 
         const ttnid  = await ZoneService.GetTTnId(id) ;
-        //console.log('ttnid : ' , ttnid) ;
+        console.log('ttnid : ' , ttnid) ;
 
         let apiRes = await AppService.Delete(ttnid) ;   
+        
+        console.log(apiRes) ;
 
         if(apiRes.statusCode == 200)
         {
@@ -118,6 +120,7 @@ const Delete = async (req , res) => {
         }else{
             res.status(apiRes.statusCode).json({message : apiRes.body}) ;
         }
+       
 
     }catch(error)
     {

@@ -73,4 +73,35 @@ const GetDeviceLogCount = async(req , res) => {
     }
 }
 
-module.exports = {ReadAll , GetDeviceLog , DeleteAll,GetDeviceLogCount ,GetDeviceLogByDate} ;
+const GetDeviceSensorCount = async( req , res ) => {
+
+    try{
+        const count    = req.params.count ;
+        const deviceid = req.params.id ;
+        const sensor   = req.params.sensor ;
+
+        if(sensor != "temperature" &&
+           sensor != "humidity"    && 
+           sensor != "soilmoisture")
+        {
+            res.status(200).json({message : 'Sensor data not available'}) ;
+        }
+        else{
+            const ret      = await DeviceLogService.GetDeviceSensorByCount(deviceid ,sensor, count) ;
+            res.status(200).json(ret) ;
+        }
+        
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json(e) ;
+    }
+}
+
+module.exports = {
+                    ReadAll , GetDeviceLog , DeleteAll,GetDeviceLogCount ,
+                    GetDeviceLogByDate     , GetDeviceSensorCount 
+                 } ;
+
+
+

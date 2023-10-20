@@ -7,7 +7,7 @@ const User = mongoose.Schema({
     addby      : { type : mongoose.Schema.Types.ObjectId ,ref : 'user' },
     email      : { type : String ,required : true  } ,
     firstname       : String ,
-
+    phone      : String ,
     lastname   : String ,
     profilepic : String ,
     password   : String ,

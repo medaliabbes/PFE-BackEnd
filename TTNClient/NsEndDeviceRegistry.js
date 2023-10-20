@@ -17,13 +17,13 @@ class NsEndDeviceRegistryService extends Client {
         let SetEndDeviceRequest = {
             end_device: {
                 supports_join: true,
-                lorawan_version: "1.0.2",
+                lorawan_version: "1.0.0",
                 ids: {
                   device_id: devId   ,
                   dev_eui  : devEui  ,
                   join_eui : joinEui ,
                 },
-                lorawan_phy_version: "1.0.2-b",
+                lorawan_phy_version: "1.0.0",
                 frequency_plan_id : "EU_863_870_TTN"
             },
             field_mask : {

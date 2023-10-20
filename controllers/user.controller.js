@@ -122,8 +122,13 @@ const Read   = async (req , res) => {
                     firstname  : ret.firstname , 
                     lastname   : ret.lastname  ,
                     email      : ret.email ,
-                    permission : userpermssion
+                    permission : userpermssion ,
+                    phone      : ret.phone
                 } ;
+        if(ret.phone != null && ret.phone != undefined)
+        {
+        	user.phone      = ret.phone ;
+        }
 
         res.status(200).json(user) ;
         //res.status(200).json(ret) ;
@@ -168,6 +173,7 @@ const GetUserAddedBy = async (req , res) => {
                         firstname  : user.firstname , 
                         lastname   : user.lastname  ,
                         email : user.email ,
+                        phone : user.phone ,
                         permission : userpermssion} ;
             //console.log("myuser :" , myuser) ;
             listOfUsers.push(myuser) ;

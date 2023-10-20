@@ -27,7 +27,9 @@ const Create = async(req , res) =>
         //console.log(device) ;
         
         const ttnRes = await TTNDeviceService.Create({
-            appid :device.appid ,id :device.ttnid, eui :device.eui , join : device.join
+            appid :device.appid ,id :device.ttnid, 
+            eui :device.eui , 
+            join : device.join
             , appkey :device.appkey ,name: device.name, 
         }) ;  
         if(ttnRes != true)
@@ -67,7 +69,11 @@ const Delete = async(req , res) =>
 {
     try{
         const id = req.params.id ; 
+        
         const ret = await deviceService.Delete(id) ;
+        
+        TTNDeviceService.Delete(ret.appid , "eui-"+ret.eui) ;
+        
         res.status(200).json(ret) ;
     }catch(error)
     {
@@ -107,7 +113,9 @@ const GetListOfAlerts = async(req , res) =>
     try{
         const deviceId = req.params.id ;
         const mylist = await deviceService.GetAlertList(deviceId) ;
-        res.status(200).json({mylist});
+        
+        console.log(mylist);
+        res.status(200).json(mylist);
     }catch(error)
     {
         console.log(error) ;

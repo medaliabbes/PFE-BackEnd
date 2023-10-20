@@ -28,6 +28,7 @@ sender.on('command-device' ,(options)=>{
     {
         let topic = 'v3/'+options.appid+'@ttn/devices/eui-'+options.eui+'/down/push' ;
         console.log("MQTT Sender topic :" , topic) ;
+        console.log("app key :", options.appkey );
     }
 
     const brokerUrl  = process.env.MQTT_BROKER_URL ;
@@ -43,7 +44,26 @@ sender.on('command-device' ,(options)=>{
         /**
          * data should be transformed here
          */
-        const strBase64 = "data"; //transform options.data to the correct format 
+        let strBase64 =  new ArrayBuffer(3) ; ;//"data"; //transform options.data to the correct format 
+       
+       if(options.data === "on" )
+       {
+       		
+       		strBase64[0] = 2 ;
+       		strBase64[1] = 1 ;
+       		strBase64[2] = 0 ;
+       }
+       
+       else if(options.data ==="off" )
+       {
+       		strBase64[0] = 2 ;
+       		strBase64[1] = 0 ;
+       		strBase64[2] = 0 ;
+       }
+       
+       strBase64 = btoa(String.fromCharCode.apply(null, strBase64));
+       
+       console.log(strBase64) ;
        
         const payload = '{"downlinks":[{"f_port": 2,"frm_payload":"'+ strBase64
 

@@ -45,7 +45,17 @@ async function GetDeviceLogByCount(id , count)
    return await deviceLogModel.find({deviceid : id}).sort('timestamp').limit(count) ;
 }
 
-module.exports = {Create , Read , ReadAll ,GetDeviceLog ,DeleteLog ,
-                    GetDeviceLogByDate , GetDeviceLogByCount} ;
+
+async function GetDeviceSensorByCount(devid , sensor , count)
+{
+    return await deviceLogModel.find({deviceid : devid , sensor :sensor})
+                               .sort('timestamp').limit(count) ;
+}
+
+module.exports = {
+                  Create , Read , ReadAll ,GetDeviceLog ,DeleteLog ,
+                  GetDeviceLogByDate , GetDeviceLogByCount , 
+                  GetDeviceSensorByCount
+                 } ;
 
 

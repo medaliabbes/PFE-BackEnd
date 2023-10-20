@@ -10,6 +10,8 @@ router.post('/:id' ,DeviceLogController.GetDeviceLogByDate ) ;
 
 router.get('/:id/:count' , DeviceLogController.GetDeviceLogCount) ;
 
+router.get('/:id/:sensor/:count' , DeviceLogController.GetDeviceSensorCount) ;
+
 router.delete('/all'  , DeviceLogController.DeleteAll) ;
 
 //can add select by number of sample (ex : last n samples )

@@ -45,16 +45,21 @@ const options = {
 }
 
 
-const connectUrl      = "mqtt://broker.hivemq.com:1883" ;//'mqtts://eu1.cloud.thethings.network:8883';
-const MqttClient      = mqtt.connect(connectUrl, options);
+const testUrl      = "mqtt://broker.hivemq.com:1883" ;//
+
+const BrokerURL = 'mqtts://eu1.cloud.thethings.network:8883';
+
+const MqttClient      = mqtt.connect(BrokerURL, options);
 
 console.log("Alert workerr");
+
 MqttClient.on('connect' , (error) => {
 
     //subscribe to all application 
     
     //client.subscribe('#') ;
     MqttClient.subscribe("/"+ApplicationId) ;
+    console.log(`App : ${ApplicationId} connected` );
 });
 
 MqttClient.on('message' ,async (topic, message) => {
@@ -70,6 +75,9 @@ MqttClient.on('message' ,async (topic, message) => {
         console.log("dev eui :" , deviceEUI) ;
 
         console.log("dev payload :" , message.uplink_message.frm_payload) ;
+        
+        
+        
 
         //format Payload and inserted into database 
 
@@ -77,12 +85,24 @@ MqttClient.on('message' ,async (topic, message) => {
 
         //console.log("device:" ,device) ;
 
-        const log = { deviceid  : device._id.toString() , sensor : "temperature" , value : 20 };
-
+        /*const log = { deviceid  : device._id.toString() , sensor : "humidity" , value : message.uplink_message.frm_payload }; */
+        
+        let log = {deviceid  : device._id.toString() , sensor : "humidity" , value : tempval} ;
+        
+        
+        
         console.log("device log :" , log);
 
         const dblog = await DeviceLogService.Create(log) ;
+        
+        log = {deviceid  : device._id.toString() , sensor : "soilmoisture" , value : tempval} ;
 
+	const dlog1 = await DeviceLogService.Create(log) ;
+	
+	log = {deviceid  : device._id.toString() , sensor : "temperature" , value : tempval} ;
+         
+	const dlog2 = await DeviceLogService.Create(log) ;
+	
         console.log("db log :" , dblog);
 
         //this will return a list of alerts

@@ -86,7 +86,36 @@ const userPostAuthorization = (req , res , next ) => {
          * for now allow read permission for all resources later permission 
          * need to be set by the front-end
          */
-        let userpermission = req.body.permissionlevel ;
+        let userpermission = req.body.permission ;
+        console.log("permision Level :" ,) ;
+        //set the permission 
+        /*const permission = new permissionmodule.permission() ;
+        permission.DEVICES.AllowRead()   ;
+        permission.ALERTS.AllowRead()    ;
+        permission.ZONES.AllowRead()     ;
+        permission.SCHEDULER.AllowRead() ;
+        permission.USERCOMMAND.AllowRead() ;
+        */
+
+        req.body.permissionLevel = PermissionObejectToNumber(userpermission) ;//permission.getPermissionCode() ;
+   
+    }
+    else if(req.method === "PUT") 
+    {
+        console.log("postAuthorization ");
+        //set added by field 
+        req.body.addby = req.user.id ; 
+        
+        if(req.body.password != null && req.body.password != undefined){
+        //encrypt password
+        const password = req.body.password ;
+        req.body.password  = bcrypt.hashSync(password , 8);
+	}
+        /**
+         * for now allow read permission for all resources later permission 
+         * need to be set by the front-end
+         */
+        let userpermission = req.body.permission ;
         console.log("permision Level :" ,) ;
         //set the permission 
         /*const permission = new permissionmodule.permission() ;

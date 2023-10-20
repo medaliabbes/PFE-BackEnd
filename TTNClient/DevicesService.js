@@ -46,7 +46,7 @@ class DevicesService {
             return false;
         }
 
-        res   = await this.NsService.Create(device.appid , device.id , device.join ,device.eui) ;
+        res   = await this.NsService.Create(device.appid , device.id , 				device.join ,device.eui) ;
 
         if(res.statusCode != 200) 
         {
