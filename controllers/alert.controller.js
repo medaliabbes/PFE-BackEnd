@@ -167,6 +167,20 @@ const ReadAll = async (req , res) =>{
     }
 }
 
+const getUserAlerts = async(req , res)=>{
+    try{
+
+        const ret = await alertService.GetUserListOfAlerts(req.params.userid) ;
+
+        res.status(200).json(ret) ;
+        
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json({message : e}) ;
+    }
+}
+
 function AlertModelToRedisElement(alert)
 {
     let redisElement = { deviceid :  alert.deviceid.toString()  , 
@@ -182,4 +196,5 @@ function AlertModelToRedisElement(alert)
 }
 
 
-module.exports = { Create , Update , Delete , Read , GetDeviceAlert ,ReadAll} ;
+module.exports = { Create , Update , Delete , Read ,getUserAlerts ,
+     GetDeviceAlert ,ReadAll} ;

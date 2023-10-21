@@ -161,6 +161,19 @@ const GetZoneSheduler = async(req , res) => {
     }
 }
 
+const getUserSchedulers = async(req , res) => {
+    try{
+
+        
+        res.status(200).json({message : 'ok'});
+
+    }catch(e)
+    {
+        console.log(e) ;
+        res.status(500).json({message : e}) ;
+    }
+}
+
 const ReadAll  = async(req,res) =>{
     try{
         const ret = await SchedulerService.ReadAll() ; 
@@ -189,5 +202,5 @@ function SchedulerModelToRedisFormat(Scheduler)
     return JSON.stringify(redisElement) ;
 }
 
-module.exports = { Create , Update , Delete , Read ,
+module.exports = { Create , Update , Delete , Read ,getUserSchedulers ,
                    GetDeviceSheduler , GetZoneSheduler , ReadAll } ;

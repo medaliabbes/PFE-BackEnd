@@ -53,5 +53,9 @@ async function FindZoneScheduler(zoneid)
     return await SchedulerModel.find({zone : zoneid}) ;
 }
 
+async function getUserSchedulers(userId){
+    //return await SchedulerModel.find({userid}) 
+}
+
 module.exports = { Create , Update , Delete , Read , ReadAll ,
                    FindDeviceScheduler , FindZoneScheduler} ;

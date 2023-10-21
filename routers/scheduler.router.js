@@ -21,6 +21,7 @@ router.delete('/:id' , SchedulerController.Delete) ;
 
 router.get('/:id' , SchedulerController.Read) ;
 
+router.get('/user/:userid' , SchedulerController.getUserSchedulers) ;
 
 /*
 router.get('/:id/devices' , SchedulerController.GetDeviceSheduler) ;

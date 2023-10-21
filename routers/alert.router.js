@@ -13,4 +13,7 @@ router.delete('/:id' , alertController.Delete) ;
 
 router.put('/:id' , alertController.Update) ;
 
+router.get('/user/:userid' , alertController.getUserAlerts) ;
+
+
 module.exports = router ;

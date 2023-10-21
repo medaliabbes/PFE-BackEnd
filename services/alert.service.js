@@ -36,5 +36,11 @@ async function ReadAll()
     return await alertModel.find({}) ;
 }
 
-module.exports = { Create , Update , Delete , Read , FindDeviceAlert , ReadAll} ;
+async function GetUserListOfAlerts(user_id)
+{
+    return await alertModel.find({userid : user_id});
+}
+
+module.exports = { Create , Update , Delete , Read ,
+    GetUserListOfAlerts, FindDeviceAlert , ReadAll} ;
 
