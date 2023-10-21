@@ -6,6 +6,7 @@ const mongoose                    = require('mongoose')  ;
 const cors                        = require('cors') ;
 const express                     = require('express')   ;
 const app                         = express() ;
+const DeviceLogController         = require('./controllers/deviceLog.controller') ;
 const UserRouter                  = require('./routers/user.router') ;
 const DeviceRouter                = require('./routers/device.router') ;
 const SchedulerRouter             = require('./routers/scheduler.router') ;
@@ -74,6 +75,9 @@ app.use('/api/v1/devices'     , authentication.authenticateUser , deviceAuthoriz
 app.use('/api/v1/alerts'      , authentication.authenticateUser , alertAuthorizationModule.alertAuthorization , alertAuthorizationModule.alertPostAuthorization,  AlertRouter) ;
 
 app.use('/api/v1/devicelog'    , authentication.authenticateUser , DeviceLogRouter );
+
+
+app.use('/api/v1/insertlog' , DeviceLogController.Create) ;
 
 app.get('/endpoint' , function(req , res) {
   console.log("Server working") ;

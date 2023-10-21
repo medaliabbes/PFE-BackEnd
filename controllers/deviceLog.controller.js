@@ -2,6 +2,29 @@
 
 const DeviceLogService = require('./../services/deviceLog.service');
 
+
+const Create = async (req , res)=>{
+    try{
+        let devlog = req.body ;
+
+        if(devlog.sensor != undefined && 
+            devlog.value != undefined && 
+            devlog.deviceid != undefined){
+            const ret = DeviceLogService.Create(devlog) ;
+            res.status(201).json(ret) ;
+            }
+        else{
+            const ret = {message : 'Missing filed'};
+            res.status(407).json(ret) ;
+        }
+        
+    }
+    catch(e)
+    {
+        res.status(500).json({message : e}) ;
+    }
+}
+
 const ReadAll = async(req , res)=>{
     try{
         const log = await DeviceLogService.ReadAll() ;
@@ -98,7 +121,10 @@ const GetDeviceSensorCount = async( req , res ) => {
     }
 }
 
+
+
 module.exports = {
+                    Create ,
                     ReadAll , GetDeviceLog , DeleteAll,GetDeviceLogCount ,
                     GetDeviceLogByDate     , GetDeviceSensorCount 
                  } ;
